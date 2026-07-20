@@ -110,16 +110,45 @@
 
   /* ── Header ──────────────────────────────────────── */
   .nav {
-    width: min(993px, calc(100vw - 56px));
+    width: min(640px, calc(100vw - 56px));
     margin-top: 24px;
     height: 54px;
     display: flex;
     align-items: center;
     padding: 0 22px;
-    background: var(--navbar-bg);
+    background: transparent;
     border: 0;
     border-radius: 27px;
     flex-shrink: 0;
+    position: sticky;
+    top: 12px;
+    z-index: 40;
+  }
+
+  /* full-width fade: content scrolling up dissolves under the bar.
+     Sits on z -2 so the pill fill (::after, z -1) paints above it. */
+  .nav::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: -12px;
+    width: 100vw;
+    height: calc(100% + 40px);
+    background: linear-gradient(to bottom, var(--bg) 55%, transparent);
+    z-index: -2;
+    pointer-events: none;
+  }
+
+  /* flat color fill for the bar */
+  .nav::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--navbar-bg);
+    z-index: -1;
+    pointer-events: none;
   }
 
   .brand {
@@ -145,11 +174,11 @@
 
   /* ── Hero ────────────────────────────────────────── */
   .hero {
-    width: min(993px, calc(100vw - 56px));
-    margin-top: 50px;
+    width: min(640px, calc(100vw - 56px));
+    margin-top: 44px;
     display: grid;
-    grid-template-columns: 1fr 497px;
-    gap: 48px;
+    grid-template-columns: 1fr;
+    gap: 56px;
   }
 
   /* grid items must be allowed to shrink below their min-content width */
@@ -158,11 +187,11 @@
   .hero-copy {
     display: flex;
     flex-direction: column;
-    padding: 54px 0 40px;
   }
 
   .intro-card {
-    background: var(--demo-surface);
+    /* top edge eases from the page background into the card gray */
+    background: linear-gradient(to bottom, transparent, var(--demo-surface) 64px);
     border-radius: 22px;
     padding: 26px 28px 28px;
   }
@@ -190,11 +219,10 @@
 
   .checks {
     list-style: none;
-    margin-top: auto;
     display: flex;
     flex-direction: column;
     gap: 8px;
-    padding-top: 40px;
+    padding-top: 36px;
   }
 
   .checks li {
@@ -222,7 +250,7 @@
     position: relative;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    margin-top: 22px;
+    margin-top: 40px;
   }
 
   .pcard {
@@ -303,7 +331,7 @@
   .demo {
     background: var(--demo-surface);
     border-radius: 22px;
-    padding: 28px 32px;
+    padding: 24px;
     min-height: 476px;
     display: flex;
     flex-direction: column;
@@ -538,34 +566,28 @@
     padding-top: 56px;
   }
 
-  .foot-pill {
-    display: inline-flex;
-    align-items: center;
+  /* footer CTA at the old foot-pill's size */
+  .foot .cta {
+    margin-top: 0;
     height: 27px;
-    padding: 0 14px;
-    background: var(--foot-bg);
-    border: 1px solid var(--foot-border);
+    padding: 0 5px 0 14px;
     border-radius: 14px;
     font-size: 11px;
-    font-weight: 600;
-    color: var(--ink-hi);
+    gap: 8px;
+  }
+
+  .foot .cta .cta-arrow {
+    width: 14px;
+    height: 14px;
+    border-radius: 7px;
+  }
+
+  .foot .cta .cta-arrow svg {
+    width: 8px;
+    height: 8px;
   }
 
   /* ── Responsive ──────────────────────────────────── */
-  @media (max-width: 1040px) {
-    .hero {
-      grid-template-columns: 1fr;
-      gap: 40px;
-      width: min(520px, calc(100vw - 40px));
-      margin-top: 36px;
-    }
-
-    .hero-copy { padding: 0; }
-    .hero-title { white-space: normal; }
-    .checks { margin-top: 0; padding-top: 36px; }
-    .demo { padding: 24px; }
-  }
-
   @media (max-width: 560px) {
     header.nav {
       width: calc(100vw - 40px);
@@ -573,38 +595,8 @@
       height: 50px;
       padding: 0 16px;
       border-radius: 25px;
-      background: transparent;
-      border: 0;
-      position: sticky;
       top: 10px;
-      z-index: 40;
       transition: height .28s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    /* full-width fade: content scrolling up dissolves under the bar.
-       Sits on z -2 so the pill fill (::after, z -1) paints above it. */
-    header.nav::before {
-      content: "";
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      top: -10px;
-      width: 100vw;
-      height: calc(100% + 38px);
-      background: linear-gradient(to bottom, var(--bg) 55%, transparent);
-      z-index: -2;
-      pointer-events: none;
-    }
-
-    /* flat color fill for the bar */
-    header.nav::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: 25px;
-      background: var(--navbar-bg);
-      z-index: -1;
-      pointer-events: none;
     }
 
     header.nav.compact { height: 42px; }
@@ -626,6 +618,7 @@
     .checks { padding-top: 44px; gap: 13px; }
     .checks li { align-items: flex-start; }
     .checks svg { margin-top: 3px; }
+    .steps-cards { margin-top: 52px; }
     .cta { margin-top: 36px; align-self: center; }
     .demo { padding: 22px 18px; min-height: 0; }
     .thread { min-height: 470px; }
@@ -645,7 +638,7 @@
   .demo, .bubble, .status-name, .status-time, .demo-body, .reveal-label,
   .band, .band-head, .band-row .k, .band-row .v, .band-rule,
   .insight, .insight strong, .composer, .composer-field, .icon-btn,
-  .c-pill, .foot-pill {
+  .c-pill {
     transition: background-color .22s ease, border-color .22s ease, color .22s ease;
   }
 
@@ -853,12 +846,6 @@
         </div>
       </div>
 
-      <a class="cta" href="#insights">
-        Early access sign up soon!
-        <span class="cta-arrow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </span>
-      </a>
     </section>
 
     <section class="demo" aria-label="Aptdex resume agent demo">
@@ -938,7 +925,12 @@
   </main>
 
   <footer class="foot">
-    <span class="foot-pill">Built for the negotiation</span>
+    <a class="cta" href="#insights">
+      Early access sign up soon!
+      <span class="cta-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </span>
+    </a>
   </footer>
 
   <script>
