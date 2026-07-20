@@ -3,16 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Athena | Comp Intelligence</title>
+<title>Aptdex | Everything Intelligence</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap" rel="stylesheet">
 <script>
   (function () {
-    var saved = localStorage.getItem('theme');
-    var dark = saved ? saved === 'dark'
-                     : matchMedia('(prefers-color-scheme: dark)').matches;
-    if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+    var m = matchMedia('(prefers-color-scheme: dark)');
+    function apply() {
+      document.documentElement.setAttribute('data-theme', m.matches ? 'dark' : 'light');
+    }
+    apply();
+    m.addEventListener('change', apply);
   })();
 </script>
 <style>
@@ -42,6 +44,11 @@
     --green: #279B70;
     --dot-off: #D8D8DC;
     --check: #7A7A82;
+    --shim: #85858D;
+    --shim-dim: rgba(133, 133, 141, 0.4);
+    --soft-fill: rgba(26, 26, 26, 0.06);
+    --soft-fill-hover: rgba(26, 26, 26, 0.1);
+    --ring: rgba(0, 0, 0, 0.08);
   }
 
   :root[data-theme="dark"] {
@@ -70,6 +77,11 @@
     --green: #4BBC90;
     --dot-off: #3C3D38;
     --check: #A2A2A2;
+    --shim: #A1A1A1;
+    --shim-dim: rgba(161, 161, 161, 0.45);
+    --soft-fill: rgba(245, 245, 245, 0.06);
+    --soft-fill-hover: rgba(245, 245, 245, 0.1);
+    --ring: rgba(255, 255, 255, 0.12);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -89,71 +101,32 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow-x: clip;
   }
 
-  /* ── Nav pill ────────────────────────────────────── */
+  /* ── Header ──────────────────────────────────────── */
   .nav {
-    margin-top: 16px;
-    height: 54px;
+    width: min(993px, calc(100vw - 56px));
+    margin-top: 24px;
     display: flex;
     align-items: center;
-    gap: 30px;
-    padding: 0 7px 0 22px;
-    background: var(--panel);
-    border: 1px solid var(--pill-border);
-    border-radius: 27px;
     flex-shrink: 0;
   }
 
   .brand {
     display: inline-flex;
     align-items: center;
+    gap: 10px;
     color: var(--ink);
   }
 
   .brand svg { display: block; }
 
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 28px;
+  .brand-name {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
   }
-
-  .nav-links a {
-    font-size: 14px;
-    font-weight: 400;
-    color: var(--ink-mut);
-    transition: color .15s ease;
-  }
-
-  .nav-links a:hover { color: var(--ink); }
-
-  .nav-cta {
-    display: inline-flex;
-    align-items: center;
-    height: 39px;
-    padding: 0 20px;
-    border-radius: 20px;
-    background: var(--raise-2);
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--on-raise);
-  }
-
-  .nav-cta:hover { background: var(--raise-2-hover); }
-
-  .theme-toggle {
-    background: none;
-    border: 0;
-    padding: 0 6px;
-    margin-left: -8px;
-    cursor: pointer;
-    color: var(--ink-mut);
-    display: inline-flex;
-    align-items: center;
-  }
-
-  .theme-toggle:hover { color: var(--ink); }
 
   /* ── Hero ────────────────────────────────────────── */
   .hero {
@@ -163,6 +136,9 @@
     grid-template-columns: 1fr 497px;
     gap: 48px;
   }
+
+  /* grid items must be allowed to shrink below their min-content width */
+  .hero > * { min-width: 0; }
 
   .hero-copy {
     display: flex;
@@ -246,14 +222,20 @@
 
   /* ── Demo card ───────────────────────────────────── */
   .demo {
-    background: var(--panel);
-    border: 1px solid var(--panel-border);
-    border-radius: 22px;
-    padding: 31px 63px 27px;
+    padding: 8px 0 0;
     min-height: 476px;
     display: flex;
     flex-direction: column;
   }
+
+  .thread {
+    display: flex;
+    flex-direction: column;
+    min-height: 398px;
+    transition: opacity .6s ease;
+  }
+
+  .thread.out { opacity: 0; }
 
   .bubble {
     align-self: flex-end;
@@ -295,7 +277,11 @@
     margin-left: auto;
     font-size: 12px;
     color: var(--ink-dim);
+    opacity: 0;
+    transition: opacity .3s ease;
   }
+
+  .thread.resolved .status-time { opacity: 1; }
 
   .demo-body {
     margin-top: 10px;
@@ -356,58 +342,107 @@
     color: var(--ink-soft);
   }
 
-  /* ── Input bar ───────────────────────────────────── */
-  .askbar {
+  .insight { min-height: 36px; }
+
+  /* ── Composer (aicss ai-agent-input port) ────────── */
+  .composer {
     margin-top: auto;
     display: flex;
-    align-items: center;
-    height: 51px;
-    margin-left: -4px;
-    margin-right: -4px;
-    padding: 0 6px 0 19px;
+    flex-direction: column;
+    gap: 12px;
+    padding: 8px 10px 10px;
     background: var(--askbar-bg);
-    border: 1px solid var(--pill-border);
-    border-radius: 26px;
+    border-radius: 12px;
+    /* hairline ring first so it paints on top of the drops */
+    box-shadow: 0 0 0 0.5px var(--ring), 0 1px 2px rgba(0, 0, 0, 0.05),
+      0 2px 4px rgba(0, 0, 0, 0.02);
   }
 
-  .askbar .placeholder {
-    font-size: 12.5px;
-    color: var(--ink-mut);
-    white-space: nowrap;
+  .composer-field {
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: -0.12px;
+    min-height: 18px;
+    color: var(--ink-soft);
+    opacity: 0.5; /* placeholder state */
   }
 
-  .chip {
-    margin-left: auto;
+  .composer-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .composer-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* round soft button — the fill lives on ::before so a press scales only
+     the container, never the icon on top */
+  .icon-btn {
+    position: relative;
     display: inline-flex;
     align-items: center;
-    height: 45px;
-    padding: 0 13px;
-    border-radius: 23px;
-    background: var(--chip-bg);
-    font-size: 12.5px;
-    font-weight: 600;
-    color: var(--ink);
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .round-btn {
-    width: 39px;
-    height: 39px;
-    border-radius: 50%;
-    border: none;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    flex: none;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--ink-soft);
     cursor: pointer;
-    background: var(--raise-2);
-    display: grid;
-    place-items: center;
-    color: var(--on-raise);
-    margin-left: 7px;
-    flex-shrink: 0;
   }
 
-  .round-btn:hover { background: var(--raise-2-hover); }
+  .icon-btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: var(--soft-fill);
+    transition: background 150ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 150ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
 
-  .round-btn svg { width: 15px; height: 15px; }
+  .icon-btn:hover::before { background: var(--soft-fill-hover); }
+  .icon-btn:active::before { transform: scale(0.98); }
+  .icon-btn > svg { position: relative; }
+
+  .c-pill {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    height: 22px;
+    padding: 0 8px;
+    border: 0;
+    background: transparent;
+    font-family: inherit;
+    color: var(--ink-soft);
+    font-size: 11px;
+    line-height: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .c-pill::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: var(--soft-fill);
+    transition: background 150ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 150ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .c-pill:hover::before { background: var(--soft-fill-hover); }
+  .c-pill:active::before { transform: scale(0.98); }
+
+  .send { color: var(--ink-mut); }
+  .send:disabled { cursor: default; }
+  .send:disabled:active::before { transform: none; }
 
   /* ── Footer pill ─────────────────────────────────── */
   .foot {
@@ -441,36 +476,101 @@
     .hero-copy { padding: 0; }
     .hero-title { white-space: normal; }
     .checks { margin-top: 0; padding-top: 36px; }
-    .demo { padding: 28px 24px 24px; }
+    .demo { padding: 0; }
   }
 
   @media (max-width: 560px) {
-    .nav { gap: 18px; padding-left: 16px; }
-    .nav-links { gap: 16px; }
-    .nav-links a:nth-child(2), .nav-links a:nth-child(3) { display: none; }
+    .nav { width: calc(100vw - 32px); margin-top: 18px; }
+    .hero {
+      width: calc(100vw - 32px);
+      margin-top: 28px;
+      gap: 48px;
+    }
     .hero-title { font-size: 31px; }
-    .askbar .placeholder { font-size: 12px; }
-    .chip { padding: 0 12px; }
+    .hero-title svg { width: 22px; height: 22px; }
+    .hero-copy > p { max-width: none; }
+    .checks { padding-top: 28px; }
+    .checks li { align-items: flex-start; }
+    .checks svg { margin-top: 3px; }
+    .cta { margin-top: 22px; align-self: center; }
+    .demo { padding: 0; min-height: 0; }
+    .thread { min-height: 430px; }
+    .bubble { max-width: 85%; }
+    .foot { padding-top: 40px; }
   }
 
   /* ── Theme cross-fade ────────────────────────────── */
-  body, .nav, .brand, .nav-links a, .nav-cta, .theme-toggle,
+  body, .nav, .brand,
   .hero-title, .hero-copy > p, .checks li, .checks svg, .cta, .cta-arrow,
   .demo, .bubble, .status-name, .status-time, .demo-body, .reveal-label,
   .band, .band-head, .band-row .k, .band-row .v, .band-rule,
-  .insight, .insight strong, .askbar, .askbar .placeholder, .chip,
-  .round-btn, .foot-pill {
+  .insight, .insight strong, .composer, .composer-field, .icon-btn,
+  .c-pill, .foot-pill {
     transition: background-color .22s ease, border-color .22s ease, color .22s ease;
+  }
+
+  /* ── Mock conversation (AIcss ports) ─────────────── */
+  .step {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity .42s cubic-bezier(0.22, 1, 0.36, 1),
+                transform .42s cubic-bezier(0.22, 1, 0.36, 1),
+                background-color .22s ease, color .22s ease;
+  }
+
+  .step.in {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* aicss thinking-state label-shine */
+  .shimmer {
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    background: linear-gradient(
+      90deg,
+      var(--shim) 0%, var(--shim) 30%,
+      var(--shim-dim) 45%, var(--shim-dim) 55%,
+      var(--shim) 70%, var(--shim) 100%
+    );
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: label-shine 2.25s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+  }
+
+  @keyframes label-shine {
+    0%, 18% { background-position: 100% 0; }
+    82%, 100% { background-position: 0% 0; }
+  }
+
+  /* aicss streaming-text caret */
+  .caret {
+    display: inline-block;
+    width: 7px;
+    height: 1.05em;
+    margin-left: 2px;
+    background: var(--ink);
+    vertical-align: text-bottom;
+    animation: caret-blink 1s step-end infinite;
+  }
+
+  .caret.steady { animation: none; opacity: 1; }
+
+  @keyframes caret-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
   }
 
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; }
+    .caret { animation: none; }
   }
 </style>
 </head>
 <body>
   <header class="nav">
-    <a class="brand" href="#" aria-label="Athena — home">
+    <a class="brand" href="#" aria-label="Aptdex — home">
       <svg width="23" height="22.3" viewBox="0 0 569 551" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M257.667 368.116C254.214 362.082 258.913 354.918 265.866 354.918C274.937 354.92 284.865 354.702 291.737 354.708C318.825 354.598 345.914 354.666 373.001 354.91C378.049 354.956 382.112 359.065 382.109 364.113L382.011 525.709C382.011 530.793 382.114 536.694 382.02 542.269C381.943 546.845 378.306 550.477 373.73 550.599C364.888 550.836 355.171 550.649 346.973 550.649L290.339 550.626C258.426 550.615 225.147 551.127 193.203 550.739C189.745 550.697 187.133 548.566 186.947 545.113C186.047 528.367 186.365 479.269 186.369 461.336C186.37 458.002 188.139 454.935 191.028 453.271L244.62 422.402C252.639 417.81 261.852 412.808 270.254 407.83C274.587 405.262 275.856 399.641 273.304 395.299C269.654 389.088 266.06 382.665 262.566 376.589C261.105 374.047 259.39 371.129 257.667 368.116Z" fill="currentColor"/>
         <path d="M75.384 282.448C77.1958 281.493 79.2652 281.33 81.0892 282.261C86.8252 285.19 98.3673 292.266 101.293 293.865C121.514 304.916 142.274 318.211 162.59 329.479C166.831 331.831 172.084 330.36 174.482 326.145C180.272 315.966 189.597 299.335 194.926 291.342C196.854 288.45 200.105 288.347 201.831 291.363C202.589 292.685 203.269 293.991 203.757 294.821L216.749 316.961L263.487 398.045C263.746 398.495 263.649 399.064 263.257 399.403C242.673 413.157 220.029 424.415 198.823 437.258C192.614 441.018 186.6 444.376 180.51 447.728L125.328 479.519C119.044 483.125 110.332 487.835 102.906 492.26C98.4333 494.926 92.5381 493.698 89.8775 489.223C84.5697 480.294 79.1938 470.528 74.3021 462.033L37.1758 397.513L11.396 352.846C8.55482 347.925 4.43905 341.147 1.06116 335.046C-1.28834 330.802 0.419696 325.59 4.64642 323.21C21.3811 313.787 38.0705 303.449 54.7796 294.188C61.4071 290.515 68.558 286.046 75.384 282.448Z" fill="currentColor"/>
@@ -479,20 +579,8 @@
         <path d="M186.723 7.78799C186.82 3.21371 190.563 0.107796 195.138 0.129899C200.011 0.15344 205.374 0.0257046 208.989 0.0228986L250.507 0L373.029 0.0638401C378.111 0.0664883 382.23 4.1877 382.229 9.27008L382.222 59.2486C382.255 68.2478 382.564 79.1842 382.289 88.7283C382.189 92.1906 380.057 95.2689 377.02 96.9344C369.882 100.849 358.813 107.519 354.471 110.017L301.157 140.623C300.47 141.11 299.661 141.642 298.787 142.194C294.382 144.977 292.981 150.728 295.592 155.236C300.157 163.115 304.499 171.566 308.98 179.089C312.858 185.601 307.654 195.532 300.076 195.66C268.219 196.198 236.112 195.373 204.329 195.741C201.967 195.768 199.512 195.717 197.044 195.691C191.412 195.632 186.527 191 186.61 185.368C186.839 169.877 186.556 153.456 186.557 138.346L186.736 47.6551C186.738 43.3488 186.457 20.3711 186.723 7.78799Z" fill="currentColor"/>
         <path d="M91.7201 58.2983C93.7463 55.0804 97.4741 53.9415 100.801 55.7825C105.99 58.6532 112.968 62.8385 114.902 63.8865C133.249 73.8281 152.87 86.8564 171.425 96.8192C174.4 98.4169 176.332 101.467 176.387 104.844C176.78 129.091 175.993 153.568 176.441 177.814C176.542 183.225 176.734 189.524 176.647 195.561C176.567 201.153 181.077 205.971 186.668 205.906C195.655 205.802 205.034 205.877 214.235 205.974C221.856 206.054 226.734 215.284 222.988 221.92C221.854 223.928 220.767 225.868 219.752 227.632L198.866 263.895L178.701 298.719C176.609 302.33 173.808 306.913 171.335 311.346C168.792 315.904 163.12 318.025 158.588 315.435C154.828 313.286 151.049 310.972 147.73 309.008L48.6613 251.74C35.2519 243.984 20.1206 234.736 6.05132 226.976C1.21096 224.306 -0.416058 218.012 2.40354 213.258C8.04075 203.752 14.5374 191.695 19.0061 183.972L67.0717 100.893C74.5099 87.9931 83.4808 71.3826 91.7201 58.2983Z" fill="currentColor"/>
       </svg>
+      <span class="brand-name">Aptdex</span>
     </a>
-    <nav class="nav-links" aria-label="Primary">
-      <a href="#overview">Overview</a>
-      <a href="#features">Features</a>
-      <a href="#faq">FAQ</a>
-    </nav>
-    <a class="nav-cta" href="#download">Download</a>
-    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle light or dark">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path fill-rule="evenodd" clip-rule="evenodd"
-          d="M12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4V20ZM22 12C22 17.5228 17.5228 22 12 22C11.6252 22 11.2549 21.9793 10.8901 21.939C5.88912 21.3862 2 17.148 2 12C2 6.85205 5.88912 2.61382 10.8901 2.06098C11.2549 2.02066 11.6252 2 12 2C17.5228 2 22 6.47715 22 12Z"
-          fill="currentColor"/>
-      </svg>
-    </button>
   </header>
 
   <main class="hero">
@@ -506,22 +594,22 @@
           <rect x="4.5" y="4.5" width="1.6" height="5.2" rx="0.8" transform="rotate(-45 4.5 4.5)" fill="currentColor"/>
           <rect x="18.5" y="18" width="1.6" height="5.2" rx="0.8" transform="rotate(-45 18.5 18)" fill="currentColor"/>
         </svg>
-        Comp Intelligence
+        Everything Intelligence
       </h1>
-      <p>The data layer behind every Athena conversation. Band hierarchies, ESOP schedules, variable pay, and exec packages, pulled from filings, regulatory disclosures, and operators inside the firms.<br>Not crowdsourced averages from 2023.</p>
+      <p>A living record of what you own, where it is, and everything worth remembering about it. Add belongings, attach receipts and documents, track warranties, and find anything without digging through drawers, folders, or your camera roll.</p>
 
       <ul class="checks">
         <li>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg>
-          Band-level detail for your firm and your level
+          Know exactly what you own and where it lives
         </li>
         <li>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg>
-          ESOP, RSU, and variable pay broken down, not just base
+          Keep receipts, warranties, manuals, and notes with each item
         </li>
         <li>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg>
-          Refreshed against filings, disclosures, and insider verifications
+          Search your entire physical world from one place
         </li>
       </ul>
 
@@ -534,43 +622,49 @@
     </section>
 
     <section class="demo" aria-label="Athena comp conversation demo">
-      <div class="bubble">What should I ask for as VP Engineering at Atlassian Sydney?</div>
+      <div class="thread" id="thread">
+        <div class="bubble step">What should I ask for as VP Engineering at Atlassian Sydney?</div>
 
-      <div class="status">
-        <div class="status-dots" aria-hidden="true">
-          <span style="background:#F9761B"></span>
-          <span style="background:#5BBD72"></span>
-          <span style="background:#8475EA"></span>
-          <span style="background:var(--dot-off)"></span>
+        <div class="status step">
+          <div class="status-dots" aria-hidden="true">
+            <span style="background:#F9761B"></span>
+            <span style="background:#5BBD72"></span>
+            <span style="background:#8475EA"></span>
+            <span style="background:var(--dot-off)"></span>
+          </div>
+          <span class="status-name" id="status-label">Compiling band data</span>
+          <span class="status-time">6s</span>
         </div>
-        <span class="status-name">Compiling band data</span>
-        <span class="status-time">6s</span>
+
+        <p class="demo-body step">Cross-checking 2025 filings, 14 recent offers, and 3 insider verifications.</p>
+
+        <p class="reveal-label step">Band reveal</p>
+
+        <div class="band step">
+          <p class="band-head">Atlassian&ensp;•&ensp;VP Engineering&ensp;•&ensp;Sydney</p>
+          <div class="band-row"><span class="k">Base</span><span class="v">$385k – $445k</span></div>
+          <div class="band-row"><span class="k">RSU</span><span class="v">$1.2M – $1.8M / 4y</span></div>
+          <div class="band-row"><span class="k">Bonus</span><span class="v">20 – 30% of base</span></div>
+          <div class="band-rule" aria-hidden="true"></div>
+          <div class="band-row total"><span class="k">Total OTE</span><span class="v">$720k – $920k</span></div>
+        </div>
+
+        <p class="insight step"><strong id="ins-bold"></strong><span id="ins-rest"></span><span class="caret" id="ins-caret" aria-hidden="true"></span></p>
       </div>
 
-      <p class="demo-body">Cross-checking 2025 filings, 14 recent offers, and 3 insider verifications.</p>
-
-      <p class="reveal-label">Band reveal</p>
-
-      <div class="band">
-        <p class="band-head">Atlassian&ensp;•&ensp;VP Engineering&ensp;•&ensp;Sydney</p>
-        <div class="band-row"><span class="k">Base</span><span class="v">$385k – $445k</span></div>
-        <div class="band-row"><span class="k">RSU</span><span class="v">$1.2M – $1.8M / 4y</span></div>
-        <div class="band-row"><span class="k">Bonus</span><span class="v">20 – 30% of base</span></div>
-        <div class="band-rule" aria-hidden="true"></div>
-        <div class="band-row total"><span class="k">Total OTE</span><span class="v">$720k – $920k</span></div>
-      </div>
-
-      <p class="insight"><strong>Push the top of band on RSU.</strong> Base is sticky here, equity is where they flex.</p>
-
-      <div class="askbar">
-        <span class="placeholder">What do you want to know?</span>
-        <span class="chip">Comp intel</span>
-        <button class="round-btn" type="button" aria-label="Voice input">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11.5a.9.9 0 0 1 1.8 0 4.7 4.7 0 0 0 9.4 0 .9.9 0 0 1 1.8 0 6.5 6.5 0 0 1-5.6 6.43V20h2.2a.9.9 0 0 1 0 1.8H8.9a.9.9 0 0 1 0-1.8h2.2v-2.07a6.5 6.5 0 0 1-5.6-6.43Z"/></svg>
-        </button>
-        <button class="round-btn" type="button" aria-label="Send">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.2 4.5 20.5 11a1.1 1.1 0 0 1 0 2L4.2 19.5a1 1 0 0 1-1.35-1.2L4.8 12 2.85 5.7A1 1 0 0 1 4.2 4.5Z" transform="rotate(18 12 12)"/></svg>
-        </button>
+      <div class="composer" aria-label="Ask Athena">
+        <div class="composer-field">What do you want to know?</div>
+        <div class="composer-row">
+          <button class="icon-btn" type="button" aria-label="Add attachment or switch model">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg>
+          </button>
+          <div class="composer-right">
+            <button class="c-pill" type="button">Comp intel</button>
+            <button class="icon-btn send" type="button" aria-label="Send" disabled>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 7-7 7 7M12 19V5"/></svg>
+            </button>
+          </div>
+        </div>
       </div>
     </section>
   </main>
@@ -580,12 +674,77 @@
   </footer>
 
   <script>
-    document.getElementById('theme-toggle').addEventListener('click', function () {
-      var root = document.documentElement;
-      var dark = root.getAttribute('data-theme') === 'dark';
-      root.setAttribute('data-theme', dark ? 'light' : 'dark');
-      localStorage.setItem('theme', dark ? 'light' : 'dark');
-    });
+    /* Mock agent conversation loop — thinking shimmer, staged reveals and
+       streaming text ported from aicss.dev (thinking-state / thinking-
+       reasoning / streaming-text). */
+    (function () {
+      var thread = document.getElementById('thread');
+      var steps = Array.prototype.slice.call(thread.querySelectorAll('.step'));
+      var label = document.getElementById('status-label');
+      var insBold = document.getElementById('ins-bold');
+      var insRest = document.getElementById('ins-rest');
+      var caret = document.getElementById('ins-caret');
+      var BOLD = 'Push the top of band on RSU.';
+      var REST = ' Base is sticky here, equity is where they flex.';
+      var timers = [], streamId = null;
+
+      function at(ms, fn) { timers.push(setTimeout(fn, ms)); }
+
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        steps.forEach(function (s) { s.classList.add('in'); });
+        thread.classList.add('resolved');
+        insBold.textContent = BOLD;
+        insRest.textContent = REST;
+        caret.style.display = 'none';
+        return;
+      }
+
+      function stream() {
+        var full = BOLD + REST, i = 0;
+        caret.classList.add('steady'); // solid while streaming, blinks once idle
+        streamId = setInterval(function () {
+          i += 2;
+          var s = full.slice(0, i);
+          insBold.textContent = s.slice(0, BOLD.length);
+          insRest.textContent = s.length > BOLD.length ? s.slice(BOLD.length) : '';
+          if (i >= full.length) {
+            clearInterval(streamId);
+            streamId = null;
+            caret.classList.remove('steady');
+          }
+        }, 9);
+      }
+
+      function cycle() {
+        at(300,  function () { steps[0].classList.add('in'); });                 // user bubble
+        at(1100, function () { steps[1].classList.add('in'); label.classList.add('shimmer'); });
+        at(2100, function () { steps[2].classList.add('in'); });                 // reasoning line
+        at(4300, function () { label.classList.remove('shimmer'); thread.classList.add('resolved'); });
+        at(4700, function () { steps[3].classList.add('in'); });                 // Band reveal
+        at(5000, function () { steps[4].classList.add('in'); });                 // table
+        at(5800, function () { steps[5].classList.add('in'); stream(); });       // insight streams
+        at(11500, function () { thread.classList.add('out'); });
+        at(12400, reset);
+      }
+
+      function reset() {
+        timers.forEach(clearTimeout);
+        timers = [];
+        if (streamId) { clearInterval(streamId); streamId = null; }
+        steps.forEach(function (s) { s.classList.remove('in'); });
+        thread.classList.remove('resolved');
+        label.classList.remove('shimmer');
+        insBold.textContent = '';
+        insRest.textContent = '';
+        caret.classList.remove('steady');
+        requestAnimationFrame(function () {
+          thread.classList.remove('out');
+          cycle();
+        });
+      }
+
+      cycle();
+    })();
   </script>
 </body>
 </html>
