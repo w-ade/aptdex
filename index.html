@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mosaic | Find the right design studio</title>
+<title>Aptdex | Tech jobs worth your time</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,10 +13,10 @@
     --ink: #111111;
     --ink-soft: #6b7280;
     --ink-muted: #9ca3af;
-    --blue: #1a73e8;
-    --blue-bright: #2b7fff;
-    --blue-soft: #e8f1fe;
-    --blue-soft-text: #1a73e8;
+    --blue: #1457e6;
+    --blue-bright: #1f63f2;
+    --blue-soft: #eaf0ff;
+    --blue-soft-text: #1457e6;
     --gray-btn: #f1f2f4;
     --border: #e8eaed;
     --card-shadow: 0 12px 40px rgba(15, 23, 42, 0.12), 0 2px 8px rgba(15, 23, 42, 0.06);
@@ -66,21 +66,20 @@
   }
 
   .brand-mark {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: var(--blue);
+    width: 24px;
+    height: 24px;
+    border-radius: 7px;
+    background: var(--ink);
     position: relative;
     flex-shrink: 0;
   }
 
   .brand-mark::after {
-    content: "";
+    content: "A";
     position: absolute;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #fff;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -301,18 +300,18 @@
   }
 
   .studio-logo.outspace {
-    background: #ff3d00;
+    background: #ff5a36;
     font-size: 14px;
     letter-spacing: -0.04em;
   }
 
   .studio-logo.bakers {
-    background: #2f2f2f;
+    background: #111827;
     font-size: 15px;
   }
 
   .studio-logo.hex {
-    background: #164f32;
+    background: #5b3fd6;
     font-size: 11px;
     letter-spacing: 0.04em;
   }
@@ -457,6 +456,8 @@
 
   @media (max-width: 640px) {
     .nav-links { display: none; }
+    .nav-right .link { display: none; }
+    .nav-right { gap: 0; }
     .page { padding: 0 18px 48px; }
     .features { grid-template-columns: 1fr; }
     .showcase { height: 400px; }
@@ -473,111 +474,111 @@
       <div class="nav-left">
         <a class="brand" href="#">
           <span class="brand-mark" aria-hidden="true"></span>
-          Mosaic
+          Aptdex
         </a>
         <nav class="nav-links" aria-label="Primary">
-          <a href="#product">Product</a>
-          <a href="#docs">Docs</a>
-          <a href="#pricing">Pricing</a>
+          <a href="#jobs">Jobs</a>
+          <a href="#companies">Companies</a>
+          <a href="#salary">Salaries</a>
           <a href="#resources">Resources</a>
         </nav>
       </div>
       <div class="nav-right">
-        <a class="link" href="#book">Book a call</a>
-        <a class="btn btn-soft" href="#early">Early access</a>
+        <a class="link" href="#post">Post a job</a>
+        <a class="btn btn-soft" href="#join">Join Aptdex</a>
       </div>
     </header>
 
     <section class="hero-top">
       <div>
-        <a class="career-link" href="#careers">Read our career page ›</a>
-        <h1 class="hero-title">Find the right design studio for your next big idea.</h1>
+        <a class="career-link" href="#jobs">The tech job index, rebuilt ›</a>
+        <h1 class="hero-title">Find a tech job that actually fits.</h1>
       </div>
       <div class="hero-aside">
-        <p>Browse curated design studios &amp; find the perfect partner for your next product.</p>
+        <p>Search clear, current roles from teams building useful technology. Less noise, better matches.</p>
         <div class="hero-ctas">
-          <a class="btn btn-primary" href="#early">Early access</a>
-          <a class="btn btn-gray" href="#book">Book a call</a>
+          <a class="btn btn-primary" href="#jobs">Browse jobs</a>
+          <a class="btn btn-gray" href="#alerts">Create an alert</a>
         </div>
       </div>
     </section>
 
-    <section class="showcase" aria-label="Featured studios">
+    <section class="showcase" id="jobs" aria-label="Featured tech jobs">
       <div class="studio-cards">
-        <!-- Bakers -->
+        <!-- Northstar Labs -->
         <article class="studio-card side left">
-          <div class="studio-logo bakers" aria-hidden="true">B</div>
-          <h2 class="studio-name">Bakers</h2>
-          <p class="studio-desc">Independent design &amp; engineering studio</p>
+          <div class="studio-logo bakers" aria-hidden="true">N</div>
+          <h2 class="studio-name">Senior Frontend Engineer</h2>
+          <p class="studio-desc">Northstar Labs · Developer tools</p>
           <div class="studio-stats">
             <div>
-              <span class="stat-label">Projects</span>
-              <span class="stat-value">70+</span>
+              <span class="stat-label">Salary</span>
+              <span class="stat-value">$175k+</span>
             </div>
             <div>
-              <span class="stat-label">Client retention</span>
-              <span class="stat-value">98%</span>
+              <span class="stat-label">Work type</span>
+              <span class="stat-value">Remote</span>
             </div>
             <div>
-              <span class="stat-label">Avg. rating</span>
-              <span class="stat-value">4.5</span>
+              <span class="stat-label">Level</span>
+              <span class="stat-value">Senior</span>
             </div>
           </div>
         </article>
 
-        <!-- Outspace -->
+        <!-- Relay -->
         <article class="studio-card featured">
-          <div class="studio-logo outspace" aria-hidden="true">O8</div>
-          <h2 class="studio-name">Outspace</h2>
-          <p class="studio-desc">Design &amp; development studio for startups that need to ship fast</p>
+          <div class="studio-logo outspace" aria-hidden="true">R</div>
+          <h2 class="studio-name">Product Designer</h2>
+          <p class="studio-desc">Relay · AI collaboration software for modern teams</p>
           <ul class="studio-meta">
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-4.5 7-11a7 7 0 1 0-14 0c0 6.5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
-              HQ · San Francisco, CA
+              Austin, TX · Hybrid
             </li>
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-              Team · 6 People
+              Product &amp; Design · 18 people
             </li>
             <li>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
-              Founded · 2025
+              Posted · 2 days ago
             </li>
           </ul>
           <div class="studio-stats">
             <div>
-              <span class="stat-label">Projects</span>
-              <span class="stat-value">80+</span>
+              <span class="stat-label">Salary</span>
+              <span class="stat-value">$150–185k</span>
             </div>
             <div>
-              <span class="stat-label">Client retention</span>
-              <span class="stat-value">98%</span>
+              <span class="stat-label">Work type</span>
+              <span class="stat-value">Hybrid</span>
             </div>
             <div>
-              <span class="stat-label">Avg. rating</span>
-              <span class="stat-value">4.9</span>
+              <span class="stat-label">Level</span>
+              <span class="stat-value">Mid–Senior</span>
             </div>
           </div>
-          <a class="btn btn-card" href="#book">Book a call</a>
+          <a class="btn btn-card" href="#role">View role</a>
         </article>
 
-        <!-- Hex -->
+        <!-- Ternary -->
         <article class="studio-card side right">
-          <div class="studio-logo hex" aria-hidden="true">HEX</div>
-          <h2 class="studio-name">Hex inc</h2>
-          <p class="studio-desc">Experimental design studio based in NYC</p>
+          <div class="studio-logo hex" aria-hidden="true">T</div>
+          <h2 class="studio-name">Machine Learning Engineer</h2>
+          <p class="studio-desc">Ternary · Climate intelligence platform</p>
           <div class="studio-stats">
             <div>
-              <span class="stat-label">Projects</span>
-              <span class="stat-value">40+</span>
+              <span class="stat-label">Salary</span>
+              <span class="stat-value">$190k+</span>
             </div>
             <div>
-              <span class="stat-label">Client retention</span>
-              <span class="stat-value">98%</span>
+              <span class="stat-label">Work type</span>
+              <span class="stat-value">Remote</span>
             </div>
             <div>
-              <span class="stat-label">Avg. rating</span>
-              <span class="stat-value">4.9</span>
+              <span class="stat-label">Level</span>
+              <span class="stat-value">Staff</span>
             </div>
           </div>
         </article>
@@ -589,29 +590,29 @@
         <div class="feature-icon" style="background:#fce7f3;color:#db2777" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5 14.4 8l5.8.5-4.4 3.9 1.4 5.7L12 15.5 6.8 18.1l1.4-5.7L3.8 8.5 9.6 8 12 2.5Z"/></svg>
         </div>
-        <h3>Curated studios</h3>
-        <p>Carefully selected for exceptional design and craftsmanship.</p>
+        <h3>Verified roles</h3>
+        <p>Fresh listings with salary ranges, work modes, and real hiring teams.</p>
       </article>
       <article class="feature">
         <div class="feature-icon" style="background:#dcfce7;color:#16a34a" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>
         </div>
-        <h3>Find your perfect match</h3>
-        <p>Search by industry, expertise, location, team size, or design style.</p>
+        <h3>Search that gets specific</h3>
+        <p>Filter by discipline, stack, level, location, salary, and work style.</p>
       </article>
       <article class="feature">
         <div class="feature-icon" style="background:#dbeafe;color:#2563eb" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
         </div>
-        <h3>Connect directly</h3>
-        <p>Book discovery calls directly with studios, no middlemen.</p>
+        <h3>Know the company</h3>
+        <p>See the team, product, funding, and expectations before you apply.</p>
       </article>
       <article class="feature">
         <div class="feature-icon" style="background:#fef3c7;color:#d97706" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg>
         </div>
-        <h3>Verified Work</h3>
-        <p>Browse real case studies, portfolios, and shipped products.</p>
+        <h3>Keep a clean shortlist</h3>
+        <p>Save roles, track applications, and get alerts without inbox spam.</p>
       </article>
     </section>
   </div>
