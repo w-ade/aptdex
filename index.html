@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mosaic | Find the right design studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --ink: #111111;
+    --ink-soft: #6b7280;
+    --ink-muted: #9ca3af;
+    --blue: #1a73e8;
+    --blue-bright: #2b7fff;
+    --blue-soft: #e8f1fe;
+    --blue-soft-text: #1a73e8;
+    --gray-btn: #f1f2f4;
+    --border: #e8eaed;
+    --card-shadow: 0 12px 40px rgba(15, 23, 42, 0.12), 0 2px 8px rgba(15, 23, 42, 0.06);
+    --col: 1120px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  .page {
+    max-width: var(--col);
+    margin: 0 auto;
+    padding: 0 28px 72px;
+  }
+
+  /* ── Nav ─────────────────────────────────────────── */
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+  }
+
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .brand-mark {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--blue);
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .brand-mark::after {
+    content: "";
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #fff;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .nav-links a {
+    font-size: 14px;
+    font-weight: 500;
+    color: #6b7280;
+    transition: color .15s ease;
+  }
+
+  .nav-links a:hover { color: var(--ink); }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .nav-right .link {
+    font-size: 14px;
+    font-weight: 500;
+    color: #4b5563;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 10px 16px;
+    transition: background .15s ease, transform .15s ease;
+  }
+
+  .btn:active { transform: translateY(1px); }
+
+  .btn-soft {
+    background: var(--blue-soft);
+    color: var(--blue-soft-text);
+  }
+
+  .btn-soft:hover { background: #d9e8fd; }
+
+  .btn-primary {
+    background: var(--blue-bright);
+    color: #fff;
+    padding: 12px 18px;
+  }
+
+  .btn-primary:hover { background: #1a6ef0; }
+
+  .btn-gray {
+    background: #eceef1;
+    color: #111827;
+    padding: 12px 18px;
+  }
+
+  .btn-gray:hover { background: #e2e5ea; }
+
+  .btn-card {
+    width: 100%;
+    background: #f3f4f6;
+    color: #1f2937;
+    padding: 11px 16px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 600;
+  }
+
+  .btn-card:hover { background: #e5e7eb; }
+
+  /* ── Hero copy ───────────────────────────────────── */
+  .hero-top {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 48px;
+    align-items: end;
+    padding: 28px 0 36px;
+  }
+
+  .career-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--blue);
+    margin-bottom: 18px;
+  }
+
+  .career-link:hover { text-decoration: underline; }
+
+  .hero-title {
+    font-size: clamp(34px, 4.2vw, 48px);
+    font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: -0.035em;
+    color: #111827;
+    max-width: 14ch;
+    text-wrap: balance;
+  }
+
+  .hero-aside {
+    padding-bottom: 6px;
+  }
+
+  .hero-aside p {
+    font-size: 15.5px;
+    line-height: 1.55;
+    color: #6b7280;
+    max-width: 34ch;
+    margin-bottom: 18px;
+  }
+
+  .hero-ctas {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* ── Showcase ────────────────────────────────────── */
+  .showcase {
+    position: relative;
+    border-radius: 22px;
+    overflow: hidden;
+    height: clamp(440px, 54vw, 540px);
+    background: #4aa3d8 url("hero-landscape.png") center 42% / cover no-repeat;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+  }
+
+  .showcase::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(0,0,0,0.04) 100%);
+    pointer-events: none;
+  }
+
+  .studio-cards {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 40px 48px;
+    z-index: 1;
+  }
+
+  .studio-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 22px 22px 18px;
+    box-shadow: var(--card-shadow);
+    width: 280px;
+    flex-shrink: 0;
+  }
+
+  .studio-card.side {
+    width: 252px;
+    transform: translateY(22px) scale(0.94);
+  }
+
+  .studio-card.side.left {
+    background: #dceef8;
+    animation: card-rise-side 700ms cubic-bezier(0.16, 1, 0.3, 1) 80ms both;
+  }
+
+  .studio-card.side.right {
+    background: #eef3df;
+    animation: card-rise-side 700ms cubic-bezier(0.16, 1, 0.3, 1) 240ms both;
+  }
+
+  .studio-card.featured {
+    width: 308px;
+    z-index: 2;
+    padding: 24px 24px 20px;
+    animation: card-rise-featured 700ms cubic-bezier(0.16, 1, 0.3, 1) 160ms both;
+  }
+
+  @keyframes card-rise-side {
+    from { opacity: 0; transform: translateY(40px) scale(0.92); }
+    to { opacity: 1; transform: translateY(22px) scale(0.94); }
+  }
+
+  @keyframes card-rise-featured {
+    from { opacity: 0; transform: translateY(24px) scale(0.96); }
+    to { opacity: 1; transform: translateY(-10px) scale(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .studio-card { animation: none !important; }
+  }
+
+  .studio-logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 11px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 14px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: -0.02em;
+  }
+
+  .studio-logo.outspace {
+    background: #ff3d00;
+    font-size: 14px;
+    letter-spacing: -0.04em;
+  }
+
+  .studio-logo.bakers {
+    background: #2f2f2f;
+    font-size: 15px;
+  }
+
+  .studio-logo.hex {
+    background: #164f32;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+
+  .studio-name {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+    color: #111827;
+  }
+
+  .studio-desc {
+    font-size: 13px;
+    line-height: 1.45;
+    color: #6b7280;
+    margin-bottom: 16px;
+  }
+
+  .studio-meta {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .studio-meta li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    color: #4b5563;
+  }
+
+  .studio-meta svg {
+    width: 14px;
+    height: 14px;
+    color: #9ca3af;
+    flex-shrink: 0;
+  }
+
+  .studio-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 12px 0 14px;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    margin-bottom: 4px;
+  }
+
+  .studio-stats .stat-label {
+    display: block;
+    font-size: 10.5px;
+    color: #9ca3af;
+    margin-bottom: 2px;
+  }
+
+  .studio-stats .stat-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .studio-card.side .studio-meta,
+  .studio-card.side .btn-card {
+    display: none;
+  }
+
+  .studio-card.side .studio-stats {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  /* ── Features ────────────────────────────────────── */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+    padding: 56px 4px 0;
+  }
+
+  .feature-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 14px;
+  }
+
+  .feature-icon svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .feature h3 {
+    font-size: 15px;
+    font-weight: 650;
+    letter-spacing: -0.015em;
+    margin-bottom: 6px;
+    color: #111827;
+  }
+
+  .feature p {
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: #6b7280;
+    max-width: 28ch;
+  }
+
+  /* ── Responsive ──────────────────────────────────── */
+  @media (max-width: 960px) {
+    .hero-top {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .hero-title { max-width: 18ch; }
+
+    .studio-cards {
+      overflow-x: auto;
+      justify-content: flex-start;
+      padding: 36px 24px;
+      scroll-snap-type: x mandatory;
+    }
+
+    .studio-card,
+    .studio-card.side,
+    .studio-card.featured {
+      scroll-snap-align: center;
+      transform: none;
+      width: 280px;
+    }
+
+    .features {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px 24px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .page { padding: 0 18px 48px; }
+    .features { grid-template-columns: 1fr; }
+    .showcase { height: 400px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <header class="nav">
+      <div class="nav-left">
+        <a class="brand" href="#">
+          <span class="brand-mark" aria-hidden="true"></span>
+          Mosaic
+        </a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="#product">Product</a>
+          <a href="#docs">Docs</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#resources">Resources</a>
+        </nav>
+      </div>
+      <div class="nav-right">
+        <a class="link" href="#book">Book a call</a>
+        <a class="btn btn-soft" href="#early">Early access</a>
+      </div>
+    </header>
+
+    <section class="hero-top">
+      <div>
+        <a class="career-link" href="#careers">Read our career page ›</a>
+        <h1 class="hero-title">Find the right design studio for your next big idea.</h1>
+      </div>
+      <div class="hero-aside">
+        <p>Browse curated design studios &amp; find the perfect partner for your next product.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#early">Early access</a>
+          <a class="btn btn-gray" href="#book">Book a call</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="showcase" aria-label="Featured studios">
+      <div class="studio-cards">
+        <!-- Bakers -->
+        <article class="studio-card side left">
+          <div class="studio-logo bakers" aria-hidden="true">B</div>
+          <h2 class="studio-name">Bakers</h2>
+          <p class="studio-desc">Independent design &amp; engineering studio</p>
+          <div class="studio-stats">
+            <div>
+              <span class="stat-label">Projects</span>
+              <span class="stat-value">70+</span>
+            </div>
+            <div>
+              <span class="stat-label">Client retention</span>
+              <span class="stat-value">98%</span>
+            </div>
+            <div>
+              <span class="stat-label">Avg. rating</span>
+              <span class="stat-value">4.5</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Outspace -->
+        <article class="studio-card featured">
+          <div class="studio-logo outspace" aria-hidden="true">O8</div>
+          <h2 class="studio-name">Outspace</h2>
+          <p class="studio-desc">Design &amp; development studio for startups that need to ship fast</p>
+          <ul class="studio-meta">
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-4.5 7-11a7 7 0 1 0-14 0c0 6.5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+              HQ · San Francisco, CA
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              Team · 6 People
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+              Founded · 2025
+            </li>
+          </ul>
+          <div class="studio-stats">
+            <div>
+              <span class="stat-label">Projects</span>
+              <span class="stat-value">80+</span>
+            </div>
+            <div>
+              <span class="stat-label">Client retention</span>
+              <span class="stat-value">98%</span>
+            </div>
+            <div>
+              <span class="stat-label">Avg. rating</span>
+              <span class="stat-value">4.9</span>
+            </div>
+          </div>
+          <a class="btn btn-card" href="#book">Book a call</a>
+        </article>
+
+        <!-- Hex -->
+        <article class="studio-card side right">
+          <div class="studio-logo hex" aria-hidden="true">HEX</div>
+          <h2 class="studio-name">Hex inc</h2>
+          <p class="studio-desc">Experimental design studio based in NYC</p>
+          <div class="studio-stats">
+            <div>
+              <span class="stat-label">Projects</span>
+              <span class="stat-value">40+</span>
+            </div>
+            <div>
+              <span class="stat-label">Client retention</span>
+              <span class="stat-value">98%</span>
+            </div>
+            <div>
+              <span class="stat-label">Avg. rating</span>
+              <span class="stat-value">4.9</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="features" id="product">
+      <article class="feature">
+        <div class="feature-icon" style="background:#fce7f3;color:#db2777" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5 14.4 8l5.8.5-4.4 3.9 1.4 5.7L12 15.5 6.8 18.1l1.4-5.7L3.8 8.5 9.6 8 12 2.5Z"/></svg>
+        </div>
+        <h3>Curated studios</h3>
+        <p>Carefully selected for exceptional design and craftsmanship.</p>
+      </article>
+      <article class="feature">
+        <div class="feature-icon" style="background:#dcfce7;color:#16a34a" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>
+        </div>
+        <h3>Find your perfect match</h3>
+        <p>Search by industry, expertise, location, team size, or design style.</p>
+      </article>
+      <article class="feature">
+        <div class="feature-icon" style="background:#dbeafe;color:#2563eb" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+        </div>
+        <h3>Connect directly</h3>
+        <p>Book discovery calls directly with studios, no middlemen.</p>
+      </article>
+      <article class="feature">
+        <div class="feature-icon" style="background:#fef3c7;color:#d97706" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg>
+        </div>
+        <h3>Verified Work</h3>
+        <p>Browse real case studies, portfolios, and shipped products.</p>
+      </article>
+    </section>
+  </div>
+</body>
+</html>
