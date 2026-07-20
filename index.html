@@ -217,21 +217,45 @@
     max-width: 448px;
   }
 
+  /* checklist as an inline CardGroup: stacked inline card rows with one
+     scroll-driven highlight that advances row by row */
   .checks {
     list-style: none;
+    position: relative;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    padding-top: 36px;
+    gap: 2px;
+    margin-top: 36px;
   }
 
   .checks li {
+    position: relative;
+    z-index: 1;
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 12.5px;
-    color: var(--ink-soft);
+    min-height: 46px;
+    padding: 0 14px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-hi);
   }
+
+  .checks-hl {
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-radius: 12px;
+    background: var(--soft-fill);
+    opacity: 0;
+    pointer-events: none;
+    transition: top .24s cubic-bezier(0.22, 1, 0.36, 1),
+                height .24s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity .2s ease;
+  }
+
+  .checks-hl.on { opacity: 1; }
 
   .checks svg {
     width: 13px;
@@ -615,9 +639,7 @@
       margin-top: 22px;
       line-height: 1.55;
     }
-    .checks { padding-top: 44px; gap: 13px; }
-    .checks li { align-items: flex-start; }
-    .checks svg { margin-top: 3px; }
+    .checks { margin-top: 40px; }
     .steps-cards { margin-top: 52px; }
     .cta { margin-top: 36px; align-self: center; }
     .demo { padding: 22px 18px; min-height: 0; }
@@ -808,6 +830,7 @@
       </div>
 
       <ul class="checks">
+        <span class="checks-hl" aria-hidden="true"></span>
         <li>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg>
           Know exactly what you own and where it lives
@@ -934,25 +957,32 @@
   </footer>
 
   <script>
-    /* Mobile scroll: compact the sticky brand bar, and light the checklist
-       green one check at a time as the page scrolls */
+    /* Scroll: compact the sticky brand bar (mobile), and walk the checklist
+       highlight row by row — each row greens its check as it lights up */
     (function () {
       var nav = document.querySelector('.nav');
-      var checks = Array.prototype.slice.call(document.querySelectorAll('.checks li'));
+      var list = document.querySelector('.checks');
+      var checks = Array.prototype.slice.call(list.querySelectorAll('li'));
+      var hl = list.querySelector('.checks-hl');
       var mq = matchMedia('(max-width: 560px)');
       function onScroll() {
-        if (!mq.matches) {
-          nav.classList.remove('compact');
-          checks.forEach(function (li) { li.classList.remove('checked'); });
-          return;
-        }
-        var y = window.scrollY;
-        nav.classList.toggle('compact', y > 24);
+        nav.classList.toggle('compact', mq.matches && window.scrollY > 24);
+        var trigger = window.innerHeight * 0.6;
+        var active = -1;
         checks.forEach(function (li, i) {
-          li.classList.toggle('checked', y > 24 + i * 64);
+          if (li.getBoundingClientRect().top < trigger) active = i;
+          li.classList.toggle('checked', li.getBoundingClientRect().top < trigger);
         });
+        if (active >= 0) {
+          hl.style.top = checks[active].offsetTop + 'px';
+          hl.style.height = checks[active].offsetHeight + 'px';
+          hl.classList.add('on');
+        } else {
+          hl.classList.remove('on');
+        }
       }
       addEventListener('scroll', onScroll, { passive: true });
+      addEventListener('resize', onScroll);
       mq.addEventListener('change', onScroll);
       onScroll();
     })();
