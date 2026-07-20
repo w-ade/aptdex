@@ -116,8 +116,8 @@
     display: flex;
     align-items: center;
     padding: 0 22px;
-    background: var(--panel);
-    border: 1px solid var(--pill-border);
+    background: var(--navbar-bg);
+    border: 0;
     border-radius: 27px;
     flex-shrink: 0;
   }
@@ -161,6 +161,12 @@
     padding: 54px 0 40px;
   }
 
+  .intro-card {
+    background: var(--demo-surface);
+    border-radius: 22px;
+    padding: 26px 28px 28px;
+  }
+
   .hero-title {
     display: flex;
     align-items: center;
@@ -174,7 +180,7 @@
 
   .hero-title svg { flex-shrink: 0; }
 
-  .hero-copy > p {
+  .intro-card p {
     margin-top: 18px;
     font-size: 12.5px;
     line-height: 1.4;
@@ -204,7 +210,65 @@
     height: 13px;
     color: var(--check);
     flex-shrink: 0;
+    transition: color .35s ease;
   }
+
+  .checks li.checked svg { color: var(--green); }
+
+  /* ── Process cards (fluidfunctionalism card port) ──
+     transparent tiles in a grid; one magnetic highlight
+     springs to the card nearest the cursor */
+  .steps-cards {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 22px;
+  }
+
+  .pcard {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 14px 16px 16px;
+    border-radius: 12px;
+  }
+
+  .pcard > svg {
+    width: 18px;
+    height: 18px;
+    color: var(--ink-mut);
+    margin-bottom: 10px;
+  }
+
+  .pcard-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-hi);
+    margin-bottom: 4px;
+  }
+
+  .pcard-desc {
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--ink-mut);
+  }
+
+  .pcard-hl {
+    position: absolute;
+    z-index: 0;
+    border-radius: 12px;
+    background: var(--soft-fill);
+    opacity: 0;
+    pointer-events: none;
+    transition: top .08s cubic-bezier(0.22, 1, 0.36, 1),
+                left .08s cubic-bezier(0.22, 1, 0.36, 1),
+                width .08s cubic-bezier(0.22, 1, 0.36, 1),
+                height .08s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity .08s ease;
+  }
+
+  .pcard-hl.on { opacity: 1; }
 
   .cta {
     margin-top: 27px;
@@ -551,9 +615,10 @@
       margin-top: 48px;
       gap: 80px;
     }
-    .hero-title { font-size: 31px; }
-    .hero-title svg { width: 22px; height: 22px; }
-    .hero-copy > p {
+    .hero-title { font-size: 26px; white-space: nowrap; }
+    .hero-title svg { width: 20px; height: 20px; }
+    .intro-card { padding: 22px 20px 24px; }
+    .intro-card p {
       max-width: none;
       margin-top: 22px;
       line-height: 1.55;
@@ -575,8 +640,8 @@
   }
 
   /* ── Theme cross-fade ────────────────────────────── */
-  body, .nav, .brand,
-  .hero-title, .hero-copy > p, .checks li, .checks svg, .cta, .cta-arrow,
+  body, .nav, .brand, .intro-card,
+  .hero-title, .intro-card p, .checks li, .checks svg, .cta, .cta-arrow,
   .demo, .bubble, .status-name, .status-time, .demo-body, .reveal-label,
   .band, .band-head, .band-row .k, .band-row .v, .band-rule,
   .insight, .insight strong, .composer, .composer-field, .icon-btn,
@@ -739,18 +804,15 @@
 
   <main class="hero">
     <section class="hero-copy">
+      <div class="intro-card">
       <h1 class="hero-title">
-        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
-          <rect x="12.2" y="2" width="1.6" height="5" rx="0.8" fill="currentColor"/>
-          <rect x="12.2" y="19" width="1.6" height="5" rx="0.8" fill="currentColor"/>
-          <rect x="2" y="12.2" width="5" height="1.6" rx="0.8" fill="currentColor"/>
-          <rect x="19" y="12.2" width="5" height="1.6" rx="0.8" fill="currentColor"/>
-          <rect x="4.5" y="4.5" width="1.6" height="5.2" rx="0.8" transform="rotate(-45 4.5 4.5)" fill="currentColor"/>
-          <rect x="18.5" y="18" width="1.6" height="5.2" rx="0.8" transform="rotate(-45 18.5 18)" fill="currentColor"/>
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12.0003 3V6M12.0003 18V21M5.63634 5.63604L7.75766 7.75736M16.2429 16.2426L18.3643 18.364M3 12.0007H6M18 12.0007H21M5.63634 18.364L7.75766 16.2426M16.2429 7.75736L18.3643 5.63604" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         Everything Intelligence
       </h1>
       <p>A living record of what you own, where it is, and everything worth remembering about it. Add belongings, attach receipts and documents, track warranties, and find anything without digging through drawers, folders, or your camera roll.</p>
+      </div>
 
       <ul class="checks">
         <li>
@@ -767,8 +829,32 @@
         </li>
       </ul>
 
+      <div class="steps-cards" id="steps-cards" aria-label="How Aptdex works">
+        <span class="pcard-hl" aria-hidden="true"></span>
+        <div class="pcard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></svg>
+          <span class="pcard-title">Upload</span>
+          <span class="pcard-desc">Add your resume and the listings you're chasing.</span>
+        </div>
+        <div class="pcard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+          <span class="pcard-title">Edit</span>
+          <span class="pcard-desc">Tailor it to the role with the agent beside you.</span>
+        </div>
+        <div class="pcard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          <span class="pcard-title">Match</span>
+          <span class="pcard-desc">Score your fit against every requirement.</span>
+        </div>
+        <div class="pcard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+          <span class="pcard-title">Apply</span>
+          <span class="pcard-desc">Send the version that fits every listing.</span>
+        </div>
+      </div>
+
       <a class="cta" href="#insights">
-        Sign Up to get early access!
+        Early access sign up soon!
         <span class="cta-arrow">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </span>
@@ -856,17 +942,76 @@
   </footer>
 
   <script>
-    /* Mobile: compact the sticky brand bar once the page starts scrolling */
+    /* Mobile scroll: compact the sticky brand bar, and light the checklist
+       green one check at a time as the page scrolls */
     (function () {
       var nav = document.querySelector('.nav');
+      var checks = Array.prototype.slice.call(document.querySelectorAll('.checks li'));
       var mq = matchMedia('(max-width: 560px)');
       function onScroll() {
-        if (!mq.matches) { nav.classList.remove('compact'); return; }
-        nav.classList.toggle('compact', window.scrollY > 24);
+        if (!mq.matches) {
+          nav.classList.remove('compact');
+          checks.forEach(function (li) { li.classList.remove('checked'); });
+          return;
+        }
+        var y = window.scrollY;
+        nav.classList.toggle('compact', y > 24);
+        checks.forEach(function (li, i) {
+          li.classList.toggle('checked', y > 24 + i * 64);
+        });
       }
       addEventListener('scroll', onScroll, { passive: true });
       mq.addEventListener('change', onScroll);
       onScroll();
+    })();
+
+    /* Process cards — fluidfunctionalism CardGroup proximity highlight:
+       one magnetic tint springs to the card nearest the cursor (2D). */
+    (function () {
+      var group = document.getElementById('steps-cards');
+      var cards = Array.prototype.slice.call(group.querySelectorAll('.pcard'));
+      var hl = group.querySelector('.pcard-hl');
+      var raf = null, visible = false;
+
+      function place(el) {
+        hl.style.top = el.offsetTop + 'px';
+        hl.style.left = el.offsetLeft + 'px';
+        hl.style.width = el.offsetWidth + 'px';
+        hl.style.height = el.offsetHeight + 'px';
+      }
+
+      group.addEventListener('mousemove', function (e) {
+        var x = e.clientX, y = e.clientY;
+        if (raf !== null) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(function () {
+          raf = null;
+          var best = null, bestD = Infinity, inside = null;
+          cards.forEach(function (c) {
+            var r = c.getBoundingClientRect();
+            if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) inside = c;
+            var d = Math.hypot(x - (r.left + r.width / 2), y - (r.top + r.height / 2));
+            if (d < bestD) { bestD = d; best = c; }
+          });
+          var target = inside || best;
+          if (!visible) {
+            // appear in place: snap to the target, then fade in
+            hl.style.transition = 'none';
+            place(target);
+            void hl.offsetWidth;
+            hl.style.transition = '';
+            visible = true;
+          } else {
+            place(target);
+          }
+          hl.classList.add('on');
+        });
+      });
+
+      group.addEventListener('mouseleave', function () {
+        if (raf !== null) { cancelAnimationFrame(raf); raf = null; }
+        hl.classList.remove('on');
+        visible = false;
+      });
     })();
 
     /* Mock agent conversation loop — thinking shimmer, staged reveals and
