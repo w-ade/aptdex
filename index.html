@@ -250,7 +250,7 @@
     position: relative;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    margin-top: 40px;
+    margin-bottom: 40px;
   }
 
   .pcard {
@@ -311,9 +311,12 @@
     font-size: 12.5px;
     font-weight: 500;
     color: var(--ink-soft);
+    transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1),
+                background-color .22s ease, color .22s ease;
   }
 
   .cta:hover { background: var(--cta-hover); }
+  .cta:active { transform: scale(0.97); }
 
   .cta-arrow {
     width: 16px;
@@ -323,13 +326,21 @@
     display: grid;
     place-items: center;
     flex-shrink: 0;
+    transition: transform 150ms cubic-bezier(0.22, 1, 0.36, 1),
+                background-color .22s ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .cta:hover .cta-arrow { transform: translateX(2px); }
   }
 
   .cta-arrow svg { width: 9px; height: 9px; }
 
   /* ── Demo card ───────────────────────────────────── */
   .demo {
-    background: var(--demo-surface);
+    /* bottom edge eases from the card gray back into the page background —
+       mirror of .intro-card's top fade-in */
+    background: linear-gradient(to top, transparent, var(--demo-surface) 64px);
     border-radius: 22px;
     padding: 24px;
     min-height: 476px;
@@ -618,7 +629,7 @@
     .checks { padding-top: 44px; gap: 13px; }
     .checks li { align-items: flex-start; }
     .checks svg { margin-top: 3px; }
-    .steps-cards { margin-top: 52px; }
+    .steps-cards { margin-bottom: 52px; }
     .cta { margin-top: 36px; align-self: center; }
     .demo { padding: 22px 18px; min-height: 0; }
     .thread { min-height: 470px; }
@@ -634,7 +645,7 @@
 
   /* ── Theme cross-fade ────────────────────────────── */
   body, .nav, .brand, .intro-card,
-  .hero-title, .intro-card p, .checks li, .checks svg, .cta, .cta-arrow,
+  .hero-title, .intro-card p, .checks li, .checks svg,
   .demo, .bubble, .status-name, .status-time, .demo-body, .reveal-label,
   .band, .band-head, .band-row .k, .band-row .v, .band-rule,
   .insight, .insight strong, .composer, .composer-field, .icon-btn,
@@ -797,6 +808,30 @@
 
   <main class="hero">
     <section class="hero-copy">
+      <div class="steps-cards" id="steps-cards" aria-label="How Aptdex works">
+        <span class="pcard-hl" aria-hidden="true"></span>
+        <div class="pcard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></svg>
+          <span class="pcard-title">Upload</span>
+          <span class="pcard-desc">Add your resume and the listings you're chasing.</span>
+        </div>
+        <div class="pcard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+          <span class="pcard-title">Edit</span>
+          <span class="pcard-desc">Tailor it to the role with the agent beside you.</span>
+        </div>
+        <div class="pcard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          <span class="pcard-title">Match</span>
+          <span class="pcard-desc">Score your fit against every requirement.</span>
+        </div>
+        <div class="pcard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+          <span class="pcard-title">Apply</span>
+          <span class="pcard-desc">Send the version that fits every listing.</span>
+        </div>
+      </div>
+
       <div class="intro-card">
       <h1 class="hero-title">
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -821,30 +856,6 @@
           Search your entire physical world from one place
         </li>
       </ul>
-
-      <div class="steps-cards" id="steps-cards" aria-label="How Aptdex works">
-        <span class="pcard-hl" aria-hidden="true"></span>
-        <div class="pcard">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></svg>
-          <span class="pcard-title">Upload</span>
-          <span class="pcard-desc">Add your resume and the listings you're chasing.</span>
-        </div>
-        <div class="pcard">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
-          <span class="pcard-title">Edit</span>
-          <span class="pcard-desc">Tailor it to the role with the agent beside you.</span>
-        </div>
-        <div class="pcard">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-          <span class="pcard-title">Match</span>
-          <span class="pcard-desc">Score your fit against every requirement.</span>
-        </div>
-        <div class="pcard">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
-          <span class="pcard-title">Apply</span>
-          <span class="pcard-desc">Send the version that fits every listing.</span>
-        </div>
-      </div>
 
     </section>
 
@@ -1048,7 +1059,7 @@
         var full = BOLD + REST, i = 0;
         caret.classList.add('steady'); // solid while streaming, blinks once idle
         streamId = setInterval(function () {
-          i += 2;
+          i += 1;
           var s = full.slice(0, i);
           insBold.textContent = s.slice(0, BOLD.length);
           insRest.textContent = s.length > BOLD.length ? s.slice(BOLD.length) : '';
@@ -1057,11 +1068,15 @@
             streamId = null;
             caret.classList.remove('steady');
           }
-        }, 9);
+        }, 32);
       }
 
       function cycle() {
-        at(300,  function () { steps[0].classList.add('in'); });                 // user bubble
+        // keep .out until the bubble enters so an empty thread never flashes
+        at(300,  function () {
+          thread.classList.remove('out');
+          steps[0].classList.add('in');
+        });
         at(1100, function () { steps[1].classList.add('in'); label.classList.add('shimmer'); });
         at(1600, function () { steps[2].classList.add('in'); tstep(0, true); }); // steps stream in
         at(2600, function () { tstepDone(0); tstep(1, true); });
@@ -1089,10 +1104,8 @@
         insBold.textContent = '';
         insRest.textContent = '';
         caret.classList.remove('steady');
-        requestAnimationFrame(function () {
-          thread.classList.remove('out');
-          cycle();
-        });
+        // leave .out on — cycle() clears it when the first bubble re-enters
+        cycle();
       }
 
       cycle();
