@@ -36,7 +36,7 @@
     --ink-mut: #6F6F77;
     --ink-dim: #7E7E86;
     --green: #279B70;
-    --dot-off: #D8D8DC;
+    --dot-off: #E7E7EC;
     --check: #7A7A82;
     --shim: #85858D;
     --shim-dim: rgba(133, 133, 141, 0.4);
@@ -46,6 +46,7 @@
     --check-hover-1: rgba(26, 26, 26, 0.04);
     --check-hover-2: rgba(26, 26, 26, 0.07);
     --check-hover-3: rgba(26, 26, 26, 0.1);
+    --disclosure-text: #74747B;
   }
 
   :root[data-theme="dark"] {
@@ -64,7 +65,7 @@
     --ink-mut: #9C9C9C;
     --ink-dim: #969696;
     --green: #4BBC90;
-    --dot-off: #3C3D38;
+    --dot-off: #707079;
     --check: #A2A2A2;
     --shim: #A1A1A1;
     --shim-dim: rgba(161, 161, 161, 0.45);
@@ -74,6 +75,7 @@
     --check-hover-1: rgba(245, 245, 245, 0.04);
     --check-hover-2: rgba(245, 245, 245, 0.07);
     --check-hover-3: rgba(245, 245, 245, 0.1);
+    --disclosure-text: #B0B0B6;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -170,6 +172,9 @@
 
   .nav-action {
     position: relative;
+    display: flex;
+    align-items: center;
+    margin-inline-start: auto;
   }
 
   .nav-cta {
@@ -296,6 +301,13 @@
     width: 16px;
     height: 16px;
     flex: none;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: intelligence-spin 6s linear infinite;
+  }
+
+  @keyframes intelligence-spin {
+    to { transform: rotate(360deg); }
   }
 
   .hero-title {
@@ -809,8 +821,9 @@
   }
 
   .disclosure-copy p {
-    color: var(--ink-mut);
+    color: var(--disclosure-text);
     font-size: 10px;
+    font-weight: 350;
     line-height: 1.58;
     letter-spacing: -0.005em;
   }
@@ -1100,6 +1113,7 @@
     }
     .pcard-hl { display: none; }
     .nav-cta.is-shaking { animation: none; }
+    .hero-label svg { animation: none; }
   }
 </style>
 </head>
@@ -1133,14 +1147,21 @@
       <div class="intro-card">
         <div class="hero-label">
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M12.0003 3V6M12.0003 18V21M5.63634 5.63604L7.75766 7.75736M16.2429 16.2426L18.3643 18.364M3 12.0007H6M18 12.0007H21M5.63634 18.364L7.75766 16.2426M16.2429 7.75736L18.3643 5.63604" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 3V6" stroke="#FF5B5B" stroke-width="2" stroke-linecap="round"/>
+            <path d="M16.24 7.76 18.36 5.64" stroke="#FF9A3D" stroke-width="2" stroke-linecap="round"/>
+            <path d="M18 12H21" stroke="#FFD84D" stroke-width="2" stroke-linecap="round"/>
+            <path d="m16.24 16.24 2.12 2.12" stroke="#43C98B" stroke-width="2" stroke-linecap="round"/>
+            <path d="M12 18V21" stroke="#48C8E8" stroke-width="2" stroke-linecap="round"/>
+            <path d="m7.76 16.24-2.12 2.12" stroke="#4B7BFF" stroke-width="2" stroke-linecap="round"/>
+            <path d="M3 12H6" stroke="#7357E8" stroke-width="2" stroke-linecap="round"/>
+            <path d="m5.64 5.64 2.12 2.12" stroke="#F06BC6" stroke-width="2" stroke-linecap="round"/>
           </svg>
           <span>Application intelligence</span>
         </div>
         <h1 class="hero-title">Your job search, indexed.</h1>
         <p>Drop in a job listing. Aptdex compares it with your experience, shows exactly where you match, surfaces the gaps, and builds the version of your application you should actually send.</p>
         <a class="cta hero-cta" href="mailto:hello@aptdex.com?subject=Aptdex%20beta%20access">
-          Get beta access
+          Beta email sign up
           <span class="cta-arrow">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </span>
@@ -1169,9 +1190,9 @@
 
         <div class="status step">
           <div class="status-dots" aria-hidden="true">
-            <span style="background:#F9761B"></span>
-            <span style="background:#5BBD72"></span>
-            <span style="background:#8475EA"></span>
+            <span style="background:#FF8B0D"></span>
+            <span style="background:#31DB92"></span>
+            <span style="background:#9292FF"></span>
             <span style="background:var(--dot-off)"></span>
           </div>
           <span class="status-name" id="status-label">Mapping the role to your experience</span>
