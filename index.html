@@ -709,24 +709,27 @@
 
   .send { color: var(--ink-mut); }
 
-  /* ── Footer ──────────────────────────────────────── */
-  .foot {
+  /* ── Footer and disclosures ──────────────────────── */
+  .site-footer {
     width: min(700px, calc(100vw - 56px));
-    margin: 0 auto 24px;
-    padding-top: 84px;
+    margin: 0 auto;
+    padding: 88px 0 28px;
+  }
+
+  .footer-cta {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 14px;
   }
 
-  .foot-note {
+  .footer-note {
     color: var(--ink-dim);
     font-size: 11px;
     line-height: 1.4;
   }
 
-  .foot .cta {
+  .footer-cta .cta {
     align-self: center;
     margin-top: 0;
     height: 34px;
@@ -736,16 +739,111 @@
     gap: 8px;
   }
 
-  .foot .cta .cta-arrow {
+  .footer-cta .cta .cta-arrow {
     width: 14px;
     height: 14px;
     border-radius: 7px;
   }
 
-  .foot .cta .cta-arrow svg {
+  .footer-cta .cta .cta-arrow svg {
     width: 8px;
     height: 8px;
   }
+
+  .footer-main {
+    margin-top: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+  }
+
+  .footer-brand {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    color: var(--ink);
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .footer-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .footer-link {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    padding-inline: 9px;
+    color: var(--ink-mut);
+    font-size: 11px;
+    font-weight: 500;
+    transition: color 150ms ease;
+  }
+
+  .footer-link:hover { color: var(--ink); }
+
+  .disclosures {
+    margin-top: 72px;
+    padding-top: 28px;
+    border-top: 1px solid var(--rule);
+  }
+
+  .disclosures h2 {
+    color: var(--ink-hi);
+    font-size: 10px;
+    line-height: 1;
+    font-weight: 650;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .disclosure-copy {
+    margin-top: 18px;
+    display: grid;
+    gap: 14px;
+  }
+
+  .disclosure-copy p {
+    color: var(--ink-mut);
+    font-size: 10px;
+    line-height: 1.58;
+    letter-spacing: -0.005em;
+  }
+
+  .footer-legal {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    color: var(--ink-dim);
+    font-size: 10px;
+    line-height: 1.5;
+  }
+
+  .footer-legal-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 4px 14px;
+  }
+
+  .footer-legal a {
+    min-height: 30px;
+    display: inline-flex;
+    align-items: flex-start;
+    color: var(--ink-dim);
+    transition: color 150ms ease;
+  }
+
+  .footer-legal a:hover { color: var(--ink); }
 
   /* ── Responsive ──────────────────────────────────── */
   @media (max-width: 560px) {
@@ -794,10 +892,37 @@
     .process { padding-top: 0; }
     .section-title { margin-bottom: 20px; }
     .pcard { min-height: 144px; }
-    .foot {
+    .site-footer {
       width: calc(100vw - 40px);
-      padding-top: 72px;
-      margin-bottom: 22px;
+      padding: 72px 0 24px;
+    }
+    .footer-main {
+      margin-top: 56px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .footer-nav {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0 8px;
+    }
+    .footer-link { padding-inline: 0; }
+    .disclosures {
+      margin-top: 56px;
+      padding-top: 24px;
+    }
+    .disclosure-copy p {
+      font-size: 10px;
+      line-height: 1.6;
+    }
+    .footer-legal {
+      flex-direction: column;
+      gap: 12px;
+    }
+    .footer-legal-links {
+      justify-content: flex-start;
     }
   }
 
@@ -826,7 +951,9 @@
   .demo, .bubble, .status-name, .status-time, .reveal-label,
   .band, .band-head, .band-row .k, .band-row .v, .band-rule,
   .insight, .insight strong, .composer, .composer-field, .icon-btn,
-  .c-pill, .section-title, .pcard-title, .pcard-desc, .foot-note {
+  .c-pill, .section-title, .pcard-title, .pcard-desc, .footer-note,
+  .footer-brand, .footer-link, .disclosure-copy p, .footer-legal,
+  .disclosures {
     transition: background-color .22s ease, border-color .22s ease, color .22s ease;
   }
 
@@ -1147,14 +1274,47 @@
     </section>
   </main>
 
-  <footer class="foot">
-    <p class="foot-note">Aptdex is approaching private beta.</p>
-    <a class="cta" href="mailto:hello@aptdex.com?subject=Aptdex%20beta%20access">
-      Join the Aptdex private beta
-      <span class="cta-arrow">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </span>
-    </a>
+  <footer class="site-footer">
+    <section class="footer-cta" aria-label="Private beta access">
+      <p class="footer-note">Aptdex is approaching private beta.</p>
+      <a class="cta" href="mailto:hello@aptdex.com?subject=Aptdex%20beta%20access">
+        Join the Aptdex private beta
+        <span class="cta-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </span>
+      </a>
+    </section>
+
+    <div class="footer-main">
+      <a class="footer-brand" href="#top" aria-label="Aptdex — back to top">Aptdex</a>
+      <nav class="footer-nav" aria-label="Footer">
+        <a class="footer-link" href="#top">Aptdex</a>
+        <a class="footer-link" href="privacy.html">Privacy</a>
+        <a class="footer-link" href="terms.html">Terms</a>
+        <a class="footer-link" href="mailto:hello@aptdex.com?subject=Aptdex%20inquiry">Contact</a>
+      </nav>
+    </div>
+
+    <section class="disclosures" aria-labelledby="disclosures-title">
+      <h2 id="disclosures-title">Disclosures</h2>
+      <div class="disclosure-copy">
+        <p>The current public Aptdex site is a static product preview. It does not provide an upload form or application-processing endpoint, so résumés, cover letters, job listings, portfolio information, notes, and other application materials cannot presently be submitted through this website. Because no submission flow exists, the public site has no submitted application materials to sell, rent, trade, use for advertising, or use to train artificial intelligence models. Messages you choose to send through your email client are handled by the relevant email providers under their own terms.</p>
+        <p>The repository powering this site does not include accounts, file storage, document extraction, retention logic, deletion controls, or artificial intelligence provider configuration. Aptdex therefore does not currently claim that future beta uploads are deleted after processing, never retained, encrypted, or excluded from provider model training. Before any workflow accepts personal application materials, retention periods, deletion choices, provider use, and model-training terms will be documented in the Privacy Policy.</p>
+        <p>The public site is delivered by hosting and font-delivery providers, which may receive standard request metadata such as an IP address, user agent, requested URL, and timestamp. No advertising, behavioral profiling, or product analytics script is present in the current public-site implementation. Any production beta providers for infrastructure, storage, analytics, or artificial intelligence processing will be identified and governed by the applicable Privacy Policy before they receive application materials.</p>
+        <p>Information generated by Aptdex—including job-fit analysis, requirement matching, résumé recommendations, suggested language, salary information, company information, and application guidance—is provided for informational and organizational purposes only. Aptdex does not guarantee the accuracy, completeness, or continued availability of third-party job listings, employer information, compensation ranges, or other externally sourced information. You remain responsible for reviewing all generated materials and confirming that every statement submitted to an employer is truthful, accurate, current, and representative of your actual experience.</p>
+        <p>Aptdex does not guarantee interviews, employment offers, compensation, placement, career advancement, or any other hiring outcome. References to companies, job listings, products, logos, trademarks, or employment opportunities are provided for identification, demonstration, or informational purposes and do not imply sponsorship, endorsement, partnership, or affiliation. Product screens, sample listings, match scores, recommendations, and interface examples shown on this website may be illustrative and may not represent currently available functionality.</p>
+        <p>Aptdex is currently under active development and may be offered as private or limited beta software. Features, processing methods, availability, data-handling practices, and product functionality may change as the service evolves. Material changes affecting how personal information is collected, used, retained, or shared will be reflected in the applicable Privacy Policy. Beta software may contain errors, interruptions, incomplete functionality, or changes without prior notice.</p>
+      </div>
+    </section>
+
+    <div class="footer-legal">
+      <span>© 2026 Aptdex. All rights reserved.</span>
+      <div class="footer-legal-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Use</a>
+        <a href="mailto:hello@aptdex.com?subject=Aptdex%20inquiry">Contact</a>
+      </div>
+    </div>
   </footer>
 
   <script>
