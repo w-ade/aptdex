@@ -128,7 +128,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 22px;
+    padding: 0 8px 0 22px;
     background: transparent;
     border: 0;
     border-radius: 27px;
@@ -350,7 +350,10 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    padding-top: 44px;
+    padding-top: 80px;
+    padding-bottom: 28px;
+    margin-bottom: 12px;
+    overflow-x: clip;
   }
 
   .checks li {
@@ -363,8 +366,21 @@
     padding: 8px 12px;
     margin: 0 -12px;
     border-radius: 10px;
+    opacity: 0;
+    transform: translateX(-32px);
     transition: background-color 150ms cubic-bezier(0.22, 1, 0.36, 1),
-                color .22s ease;
+                color .22s ease,
+                opacity .55s cubic-bezier(0.22, 1, 0.36, 1),
+                transform .55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .checks li:nth-child(2) {
+    transform: translateX(32px);
+  }
+
+  .checks li.is-in {
+    opacity: 1;
+    transform: none;
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -1130,7 +1146,7 @@
       width: calc(100vw - 40px);
       margin-top: 30px;
       height: 50px;
-      padding: 0 16px;
+      padding: 0 6px 0 16px;
       border-radius: 25px;
       top: 10px;
       transition: height .28s cubic-bezier(0.22, 1, 0.36, 1);
@@ -1153,7 +1169,12 @@
       line-height: 1.55;
     }
     .hero-cta { align-self: flex-start; margin-top: 26px; }
-    .checks { padding-top: 40px; gap: 10px; }
+    .checks {
+      padding-top: 64px;
+      padding-bottom: 20px;
+      margin-bottom: 8px;
+      gap: 10px;
+    }
     .checks li { align-items: flex-start; }
     .checks svg { margin-top: 3px; }
     .demo {
@@ -1226,7 +1247,7 @@
 
   @media (max-width: 360px) {
     .nav {
-      padding-inline: 14px;
+      padding-inline: 14px 6px;
     }
 
     .nav-cta {
@@ -1402,6 +1423,11 @@
     .pcard-hl { display: none; }
     .status-orb-face,
     .status-name {
+      opacity: 1;
+      transform: none;
+      transition: none !important;
+    }
+    .checks li {
       opacity: 1;
       transform: none;
       transition: none !important;
@@ -1930,30 +1956,87 @@
       });
     })();
 
-    /* Mobile scroll: compact the sticky brand bar, and light the checklist
-       green one check at a time as the page scrolls */
+    /* Checklist: slide in from alternating sides on scroll; on mobile,
+       light each check green as it enters. */
     (function () {
       var nav = document.querySelector('.nav');
-      var checks = Array.prototype.slice.call(document.querySelectorAll('.checks li'));
+      var list = document.querySelector('.checks');
+      var checks = list
+        ? Array.prototype.slice.call(list.querySelectorAll('li'))
+        : [];
       var mq = matchMedia('(max-width: 560px)');
       var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
       if (!nav) return;
 
+      var revealed = false;
+      var staggerTimers = [];
+
+      function clearStagger() {
+        staggerTimers.forEach(clearTimeout);
+        staggerTimers = [];
+      }
+
+      function revealChecks() {
+        if (revealed || !checks.length) return;
+        revealed = true;
+        if (reduceMotion.matches) {
+          checks.forEach(function (li) {
+            li.classList.add('is-in');
+            if (mq.matches) li.classList.add('checked');
+          });
+          return;
+        }
+        checks.forEach(function (li, i) {
+          staggerTimers.push(setTimeout(function () {
+            li.classList.add('is-in');
+            if (mq.matches) li.classList.add('checked');
+          }, i * 140));
+        });
+      }
+
       function onScroll() {
         if (!mq.matches) {
           nav.classList.remove('compact');
-          checks.forEach(function (li) { li.classList.remove('checked'); });
-          return;
+        } else {
+          nav.classList.toggle('compact', window.scrollY > 24);
         }
-        var y = window.scrollY;
-        nav.classList.toggle('compact', y > 24);
-        checks.forEach(function (li, i) {
-          li.classList.toggle('checked', reduceMotion.matches || y > 24 + i * 64);
-        });
       }
+
+      if (list && 'IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              revealChecks();
+              io.disconnect();
+            }
+          });
+        }, { threshold: 0.35, rootMargin: '0px 0px -8% 0px' });
+        io.observe(list);
+      } else {
+        revealChecks();
+      }
+
       addEventListener('scroll', onScroll, { passive: true });
-      mq.addEventListener('change', onScroll);
-      reduceMotion.addEventListener('change', onScroll);
+      mq.addEventListener('change', function () {
+        onScroll();
+        if (!mq.matches) {
+          checks.forEach(function (li) { li.classList.remove('checked'); });
+        } else if (revealed) {
+          checks.forEach(function (li) {
+            if (li.classList.contains('is-in')) li.classList.add('checked');
+          });
+        }
+      });
+      reduceMotion.addEventListener('change', function () {
+        if (reduceMotion.matches) {
+          clearStagger();
+          checks.forEach(function (li) {
+            li.classList.add('is-in');
+            if (mq.matches) li.classList.add('checked');
+          });
+          revealed = true;
+        }
+      });
       onScroll();
     })();
 
