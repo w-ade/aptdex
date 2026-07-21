@@ -216,7 +216,8 @@
     transition: opacity 120ms ease, transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .nav-cta.is-shaking {
+  .nav-cta.is-shaking,
+  .locked-cta.is-shaking {
     animation: access-shake 380ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
@@ -367,6 +368,158 @@
 
   .checks li.checked svg { color: var(--green); }
 
+  /* ── Intelligence capabilities ───────────────────── */
+  .intelligence {
+    padding-top: 4px;
+  }
+
+  .intelligence-header {
+    max-width: 620px;
+  }
+
+  .intelligence-title {
+    color: var(--ink);
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+
+  .intelligence-subtitle {
+    margin-top: 10px;
+    color: var(--ink-hi);
+    font-size: 15px;
+    font-weight: 550;
+    line-height: 1.4;
+  }
+
+  .intelligence-copy {
+    margin-top: 14px;
+    max-width: 590px;
+    color: var(--ink-mut);
+    font-size: 13.5px;
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+
+  .intelligence-grid {
+    margin-top: 36px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .intelligence-card {
+    min-width: 0;
+    min-height: 238px;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 16px 18px;
+    border-radius: 12px;
+    transition: background-color 150ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .intelligence-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .intelligence-card-head svg {
+    width: 18px;
+    height: 18px;
+    flex: none;
+    color: var(--ink-mut);
+  }
+
+  .intelligence-index {
+    color: var(--ink-dim);
+    font-size: 10px;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  .intelligence-card h3 {
+    margin-top: 16px;
+    color: var(--ink-hi);
+    font-size: 13.5px;
+    font-weight: 650;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .intelligence-card-description {
+    margin-top: 8px;
+    color: var(--ink-soft);
+    font-size: 12.5px;
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  .intelligence-card-support {
+    margin-top: auto;
+    padding-top: 16px;
+    color: var(--ink-mut);
+    font-size: 11.5px;
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .intelligence-card:hover { background: var(--soft-fill); }
+  }
+
+  .intelligence-loop {
+    margin-top: 46px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+  }
+
+  .intelligence-loop-title {
+    color: var(--ink-dim);
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .intelligence-loop-track {
+    margin-top: 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .intelligence-loop-track::-webkit-scrollbar { display: none; }
+
+  .intelligence-loop-list {
+    min-width: max-content;
+    display: flex;
+    align-items: center;
+    list-style: none;
+  }
+
+  .intelligence-loop-list li {
+    display: inline-flex;
+    align-items: center;
+    color: var(--ink-mut);
+    font-size: 9.5px;
+    font-weight: 500;
+    line-height: 1.3;
+    white-space: nowrap;
+  }
+
+  .intelligence-loop-list li:not(:last-child)::after {
+    content: "→";
+    margin: 0 4px;
+    color: var(--ink-dim);
+    font-size: 10px;
+  }
+
+  @media (hover: none), (pointer: coarse) {
+    .intelligence-card { background: var(--soft-fill); }
+  }
+
   /* ── Process cards ───────────────────────────────── */
   .process {
     padding-top: 4px;
@@ -396,6 +549,7 @@
     flex-direction: column;
     min-height: 132px;
     padding: 16px 18px 18px;
+    border: 1px solid color-mix(in srgb, var(--ink) 6%, transparent);
     border-radius: 12px;
   }
 
@@ -442,6 +596,7 @@
   }
 
   .cta {
+    position: relative;
     margin-top: 27px;
     align-self: flex-start;
     display: inline-flex;
@@ -449,11 +604,14 @@
     gap: 12px;
     height: 39px;
     padding: 0 12px 0 16px;
+    border: 0;
     border-radius: 20px;
     background: var(--cta-bg);
+    font-family: inherit;
     font-size: 12.5px;
     font-weight: 500;
     color: var(--ink-soft);
+    cursor: pointer;
     transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1),
                 background-color .22s ease, color .22s ease;
   }
@@ -470,7 +628,7 @@
     place-items: center;
     flex-shrink: 0;
     transition: transform 150ms cubic-bezier(0.22, 1, 0.36, 1),
-                background-color .22s ease;
+                background-color .22s ease, opacity 120ms ease;
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -478,6 +636,48 @@
   }
 
   .cta-arrow svg { width: 9px; height: 9px; }
+
+  .cta .locked-cta-lock {
+    position: absolute;
+    right: 12px;
+    width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    background: var(--cta-coin);
+    display: grid;
+    place-items: center;
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+    transition: opacity 120ms ease, transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .cta .locked-cta-lock svg {
+    width: 9px;
+    height: 9px;
+    color: #fff;
+  }
+
+  .cta.locked-cta.is-locked .cta-arrow {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  .cta.locked-cta.is-locked .locked-cta-lock {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .cta .nav-tooltip {
+    top: calc(100% + 10px);
+    right: auto;
+    left: 50%;
+    transform: translate(-50%, -3px);
+  }
+
+  .cta .nav-tooltip.is-visible {
+    transform: translate(-50%, 0);
+  }
 
   .hero-cta {
     min-height: 42px;
@@ -859,6 +1059,14 @@
   .footer-legal a:hover { color: var(--ink); }
 
   /* ── Responsive ──────────────────────────────────── */
+  @media (max-width: 680px) {
+    .intelligence-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .intelligence-card { min-height: 220px; }
+  }
+
   @media (max-width: 560px) {
     header.nav {
       width: calc(100vw - 40px);
@@ -902,6 +1110,25 @@
     .band { margin-top: 12px; }
     .insight { margin-top: 20px; }
     .composer { margin-top: 40px; }
+    .intelligence { padding-top: 0; }
+    .intelligence-title { font-size: 24px; }
+    .intelligence-grid {
+      margin-top: 32px;
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+    .intelligence-card {
+      min-height: 0;
+      padding: 16px;
+    }
+    .intelligence-card-support {
+      margin-top: 12px;
+      padding-top: 0;
+    }
+    .intelligence-loop {
+      margin-top: 38px;
+      padding-top: 20px;
+    }
     .process { padding-top: 0; }
     .section-title { margin-bottom: 20px; }
     .pcard { min-height: 144px; }
@@ -964,7 +1191,10 @@
   .demo, .bubble, .status-name, .status-time, .reveal-label,
   .band, .band-head, .band-row .k, .band-row .v, .band-rule,
   .insight, .insight strong, .composer, .composer-field, .icon-btn,
-  .c-pill, .section-title, .pcard-title, .pcard-desc, .footer-note,
+  .c-pill, .intelligence-title, .intelligence-subtitle, .intelligence-copy,
+  .intelligence-card h3, .intelligence-card-description,
+  .intelligence-card-support, .intelligence-loop, .intelligence-loop-title,
+  .intelligence-loop-list li, .section-title, .pcard-title, .pcard-desc, .footer-note,
   .footer-brand, .footer-link, .disclosure-copy p, .footer-legal,
   .disclosures {
     transition: background-color .22s ease, border-color .22s ease, color .22s ease;
@@ -1112,7 +1342,8 @@
       -webkit-text-fill-color: currentColor;
     }
     .pcard-hl { display: none; }
-    .nav-cta.is-shaking { animation: none; }
+    .nav-cta.is-shaking,
+    .locked-cta.is-shaking { animation: none; }
     .hero-label svg { animation: none; }
   }
 </style>
@@ -1131,14 +1362,14 @@
       <span class="brand-name">Aptdex</span>
     </a>
     <div class="nav-action">
-      <button class="nav-cta" type="button" aria-describedby="access-tooltip">
+      <button class="nav-cta locked-cta" type="button" aria-label="Get access — launch soon" aria-describedby="access-tooltip">
         <span class="nav-cta-label">Get access</span>
         <svg class="nav-cta-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <rect x="5" y="10" width="14" height="11" rx="2"/>
           <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
         </svg>
       </button>
-      <span class="nav-tooltip" id="access-tooltip" role="tooltip">Coming soon</span>
+      <span class="nav-tooltip" id="access-tooltip" role="status" aria-live="polite">Launch soon!</span>
     </div>
   </header>
 
@@ -1160,12 +1391,19 @@
         </div>
         <h1 class="hero-title">Your job search, indexed.</h1>
         <p>Drop in a job listing. Aptdex compares it with your experience, shows exactly where you match, surfaces the gaps, and builds the version of your application you should actually send.</p>
-        <a class="cta hero-cta" href="mailto:hello@aptdex.com?subject=Aptdex%20beta%20access">
+        <button class="cta hero-cta locked-cta" type="button" aria-label="Beta email sign up — launch soon">
           Beta email sign up
-          <span class="cta-arrow">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          <span class="cta-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </span>
-        </a>
+          <span class="locked-cta-lock" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="5" y="10" width="14" height="11" rx="2"/>
+              <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+            </svg>
+          </span>
+          <span class="nav-tooltip" role="status" aria-live="polite">Launch soon!</span>
+        </button>
       </div>
 
       <ul class="checks">
@@ -1190,9 +1428,9 @@
 
         <div class="status step">
           <div class="status-dots" aria-hidden="true">
-            <span style="background:#FF8B0D"></span>
-            <span style="background:#31DB92"></span>
-            <span style="background:#9292FF"></span>
+            <span style="background:#FF5B5B"></span>
+            <span style="background:#43C98B"></span>
+            <span style="background:#7357E8"></span>
             <span style="background:var(--dot-off)"></span>
           </div>
           <span class="status-name" id="status-label">Mapping the role to your experience</span>
@@ -1267,6 +1505,91 @@
       </div>
     </section>
 
+    <section class="intelligence" aria-labelledby="intelligence-title">
+      <div class="intelligence-header">
+        <h2 class="intelligence-title" id="intelligence-title">Intelligence</h2>
+        <p class="intelligence-subtitle">One agent. Every application decision.</p>
+        <p class="intelligence-copy">Aptdex continuously builds context about your experience, understands every opportunity you pursue, and helps you make better application decisions from beginning to end.</p>
+      </div>
+
+      <div class="intelligence-grid">
+        <article class="intelligence-card">
+          <div class="intelligence-card-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 21a7 7 0 0 1 14 0"/><path d="M18 4h3M19.5 2.5v3"/></svg>
+            <span class="intelligence-index">01</span>
+          </div>
+          <h3>Career Profile</h3>
+          <p class="intelligence-card-description">Build a structured understanding of your experience, projects, skills, tools, and accomplishments.</p>
+          <p class="intelligence-card-support">Your resume becomes a living source of evidence instead of a static document.</p>
+        </article>
+
+        <article class="intelligence-card">
+          <div class="intelligence-card-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h8"/><path d="M14 2v6h6v5"/><path d="M8 13h4M8 17h3"/><circle cx="17" cy="17" r="3"/><path d="m19.2 19.2 2.3 2.3"/></svg>
+            <span class="intelligence-index">02</span>
+          </div>
+          <h3>Role Intelligence</h3>
+          <p class="intelligence-card-description">Break every job listing into meaningful requirements, priorities, responsibilities, technologies, and expectations.</p>
+          <p class="intelligence-card-support">Separate what actually matters from generic hiring language.</p>
+        </article>
+
+        <article class="intelligence-card">
+          <div class="intelligence-card-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="7" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="m8.3 7 7.3-.1M7.5 8l3.2 7.7M16.6 9l-3.3 6.7"/></svg>
+            <span class="intelligence-index">03</span>
+          </div>
+          <h3>Evidence Mapping</h3>
+          <p class="intelligence-card-description">Connect every requirement directly to proof from your experience.</p>
+          <p class="intelligence-card-support">Know exactly where you are strong, where you're partially supported, and where genuine gaps exist.</p>
+        </article>
+
+        <article class="intelligence-card">
+          <div class="intelligence-card-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="m14.8 9.2 3-3M9.2 14.8l-3 3"/></svg>
+            <span class="intelligence-index">04</span>
+          </div>
+          <h3>Application Strategy</h3>
+          <p class="intelligence-card-description">Recommend how you should position yourself before rewriting anything.</p>
+          <p class="intelligence-card-support">Lead with the strongest evidence, reduce unnecessary risk, and focus attention where it matters.</p>
+        </article>
+
+        <article class="intelligence-card">
+          <div class="intelligence-card-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="m9 17 6-6 2 2-6 6-3 1Z"/></svg>
+            <span class="intelligence-index">05</span>
+          </div>
+          <h3>Material Generation</h3>
+          <p class="intelligence-card-description">Generate tailored resumes, cover letters, recruiter outreach, interview preparation, and application answers using your approved experience.</p>
+          <p class="intelligence-card-support">Every recommendation should be grounded in real evidence—not invented claims.</p>
+        </article>
+
+        <article class="intelligence-card">
+          <div class="intelligence-card-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h6l2 2h10v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><circle cx="15" cy="15" r="3"/><path d="M15 13.5V15l1 1"/></svg>
+            <span class="intelligence-index">06</span>
+          </div>
+          <h3>Application Memory</h3>
+          <p class="intelligence-card-description">Keep every role, resume version, conversation, follow-up, interview, and decision together.</p>
+          <p class="intelligence-card-support">Every application becomes a living workspace instead of another forgotten spreadsheet row.</p>
+        </article>
+      </div>
+
+      <div class="intelligence-loop">
+        <p class="intelligence-loop-title">The intelligence loop</p>
+        <div class="intelligence-loop-track" role="region" aria-label="Aptdex intelligence loop" tabindex="0">
+          <ol class="intelligence-loop-list">
+            <li>Career Profile</li>
+            <li>Role Intelligence</li>
+            <li>Evidence Mapping</li>
+            <li>Application Strategy</li>
+            <li>Material Generation</li>
+            <li>Application Memory</li>
+            <li>Continuous Learning</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
     <section class="process" aria-labelledby="process-title">
       <h2 class="section-title" id="process-title">From listing to application</h2>
       <div class="steps-cards" id="steps-cards">
@@ -1298,12 +1621,19 @@
   <footer class="site-footer">
     <section class="footer-cta" aria-label="Private beta access">
       <p class="footer-note">Aptdex is approaching private beta.</p>
-      <a class="cta" href="mailto:hello@aptdex.com?subject=Aptdex%20beta%20access">
+      <button class="cta locked-cta" type="button" aria-label="Join the Aptdex private beta — launch soon">
         Join the Aptdex private beta
-        <span class="cta-arrow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        <span class="cta-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </span>
-      </a>
+        <span class="locked-cta-lock" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="10" width="14" height="11" rx="2"/>
+            <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+          </svg>
+        </span>
+        <span class="nav-tooltip" role="status" aria-live="polite">Launch soon!</span>
+      </button>
     </section>
 
     <div class="footer-main">
@@ -1339,26 +1669,30 @@
   </footer>
 
   <script>
-    /* Preview the locked beta state without navigating away. */
+    /* Locked join CTAs: show lock + "Launch soon!" — no email / navigation. */
     (function () {
-      var accessButton = document.querySelector('.nav-cta');
-      var tooltip = document.getElementById('access-tooltip');
-      if (!accessButton || !tooltip) return;
+      var buttons = Array.prototype.slice.call(document.querySelectorAll('.locked-cta'));
+      if (!buttons.length) return;
 
-      var tooltipTimer = null;
-      accessButton.addEventListener('click', function () {
-        accessButton.classList.add('is-locked');
-        accessButton.classList.remove('is-shaking');
-        void accessButton.offsetWidth;
-        accessButton.classList.add('is-shaking');
-        accessButton.setAttribute('aria-label', 'Get access — coming soon');
-        tooltip.classList.add('is-visible');
+      buttons.forEach(function (button) {
+        var scope = button.parentElement || button;
+        var tooltip = button.querySelector('.nav-tooltip') || scope.querySelector('.nav-tooltip');
+        var tooltipTimer = null;
 
-        clearTimeout(tooltipTimer);
-        tooltipTimer = setTimeout(function () {
-          accessButton.classList.remove('is-shaking');
-          tooltip.classList.remove('is-visible');
-        }, 1600);
+        button.addEventListener('click', function (event) {
+          event.preventDefault();
+          button.classList.add('is-locked');
+          button.classList.remove('is-shaking');
+          void button.offsetWidth;
+          button.classList.add('is-shaking');
+          if (tooltip) tooltip.classList.add('is-visible');
+
+          clearTimeout(tooltipTimer);
+          tooltipTimer = setTimeout(function () {
+            button.classList.remove('is-shaking');
+            if (tooltip) tooltip.classList.remove('is-visible');
+          }, 1600);
+        });
       });
     })();
 
