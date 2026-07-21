@@ -759,14 +759,36 @@
     flex: none;
     line-height: 0;
     background: var(--dot-off);
+    /* Keep clip on the untransformed shell — iOS drops overflow:hidden
+       rounding when scale lives on the same node. */
+    clip-path: circle(50%);
   }
 
   .status-orb + .status-orb { margin-left: -6px; }
+
+  .status-orb-face {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    opacity: 0;
+    transform: scale(0.45);
+    transform-origin: center;
+    transition: opacity .34s cubic-bezier(0.22, 1, 0.36, 1),
+                transform .34s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .status-orb.is-in .status-orb-face {
+    opacity: 1;
+    transform: none;
+  }
 
   .status-orb canvas {
     width: 100%;
     height: 100%;
     display: block;
+    border-radius: 50%;
     filter: blur(1px);
   }
 
@@ -776,6 +798,16 @@
     font-weight: 600;
     line-height: 1.3;
     color: var(--ink-hi);
+    opacity: 0;
+    transform: translateY(5px);
+    transition: opacity .4s cubic-bezier(0.22, 1, 0.36, 1),
+                transform .4s cubic-bezier(0.22, 1, 0.36, 1),
+                color .22s ease;
+  }
+
+  .status-name.is-in {
+    opacity: 1;
+    transform: none;
   }
 
   .status-time {
@@ -1214,7 +1246,7 @@
   /* ── Theme cross-fade ────────────────────────────── */
   body, .nav, .brand, .nav-cta, .intro-card,
   .hero-label, .hero-title, .intro-card p, .checks svg,
-  .demo, .bubble, .status-name, .status-time, .reveal-label,
+  .demo, .bubble, .status-time, .reveal-label,
   .band, .band-head, .band-row .k, .band-row .v, .band-rule,
   .insight, .insight strong, .composer, .composer-field, .icon-btn,
   .c-pill, .intelligence-title, .intelligence-subtitle, .intelligence-copy,
@@ -1368,6 +1400,12 @@
       -webkit-text-fill-color: currentColor;
     }
     .pcard-hl { display: none; }
+    .status-orb-face,
+    .status-name {
+      opacity: 1;
+      transform: none;
+      transition: none !important;
+    }
     .nav-cta.is-shaking,
     .locked-cta.is-shaking { animation: none; }
     .hero-label svg { animation: none; }
@@ -1454,10 +1492,10 @@
 
         <div class="status step">
           <div class="status-dots" aria-hidden="true">
-            <span class="status-orb"><canvas width="64" height="64" data-oklb-seed="ember" data-oklb-harmony="analogous" data-oklb-hue="28"></canvas></span>
-            <span class="status-orb"><canvas width="64" height="64" data-oklb-seed="lagoon" data-oklb-harmony="complementary" data-oklb-hue="195"></canvas></span>
-            <span class="status-orb"><canvas width="64" height="64" data-oklb-seed="violet" data-oklb-harmony="triadic" data-oklb-hue="295"></canvas></span>
-            <span class="status-orb"><canvas width="64" height="64" data-oklb-seed="citrus" data-oklb-harmony="tetradic" data-oklb-hue="105"></canvas></span>
+            <span class="status-orb"><span class="status-orb-face"><canvas width="64" height="64" data-oklb-seed="ember" data-oklb-harmony="analogous" data-oklb-hue="28"></canvas></span></span>
+            <span class="status-orb"><span class="status-orb-face"><canvas width="64" height="64" data-oklb-seed="lagoon" data-oklb-harmony="complementary" data-oklb-hue="195"></canvas></span></span>
+            <span class="status-orb"><span class="status-orb-face"><canvas width="64" height="64" data-oklb-seed="violet" data-oklb-harmony="triadic" data-oklb-hue="295"></canvas></span></span>
+            <span class="status-orb"><span class="status-orb-face"><canvas width="64" height="64" data-oklb-seed="citrus" data-oklb-harmony="tetradic" data-oklb-hue="105"></canvas></span></span>
           </div>
           <span class="status-name" id="status-label">Mapping the role to your experience</span>
           <span class="status-time">6s</span>
@@ -1985,6 +2023,7 @@
       var steps = Array.prototype.slice.call(thread.querySelectorAll('.step'));
       var tsteps = Array.prototype.slice.call(thread.querySelectorAll('.tstep'));
       var label = document.getElementById('status-label');
+      var orbs = Array.prototype.slice.call(thread.querySelectorAll('.status-orb'));
       var insBold = document.getElementById('ins-bold');
       var insRest = document.getElementById('ins-rest');
       var caret = document.getElementById('ins-caret');
@@ -1992,8 +2031,14 @@
       var REST = ' It demonstrates four of the role’s six highest-priority requirements.';
       var timers = [], streamId = null;
 
+      function showStatusBits() {
+        orbs.forEach(function (orb) { orb.classList.add('is-in'); });
+        if (label) label.classList.add('is-in');
+      }
+
       if (steps.length < 6 || tsteps.length < 4 || !label || !insBold || !insRest || !caret) {
         steps.forEach(function (step) { step.classList.add('in'); });
+        showStatusBits();
         return;
       }
 
@@ -2002,6 +2047,7 @@
       if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
         steps.forEach(function (s) { s.classList.add('in'); });
         tsteps.forEach(function (s) { s.classList.add('on'); });
+        showStatusBits();
         thread.classList.add('resolved');
         insBold.textContent = BOLD;
         insRest.textContent = REST;
@@ -2042,18 +2088,22 @@
           thread.classList.remove('out');
           steps[0].classList.add('in');
         });
-        at(1100, function () { steps[1].classList.add('in'); label.classList.add('shimmer'); });
-        at(1600, function () { steps[2].classList.add('in'); tstep(0, true); }); // steps stream in
-        at(2500, function () { tstepDone(0); tstep(1, true); });
-        at(3400, function () { tstepDone(1); tstep(2, true); });
-        at(4300, function () { tstepDone(2); tstep(3, true); });
-        at(5400, function () { tstepDone(3); });
-        at(5700, function () { label.classList.remove('shimmer'); thread.classList.add('resolved'); });
-        at(6100, function () { steps[3].classList.add('in'); });                 // Job listing
-        at(6400, function () { steps[4].classList.add('in'); });                 // listing card
-        at(7200, function () { steps[5].classList.add('in'); stream(); });       // insight streams
-        at(13000, function () { thread.classList.add('out'); });
-        at(13900, reset);
+        at(1100, function () { steps[1].classList.add('in'); });
+        orbs.forEach(function (orb, i) {
+          at(1180 + i * 90, function () { orb.classList.add('is-in'); });
+        });
+        at(1600, function () { label.classList.add('is-in', 'shimmer'); });
+        at(1900, function () { steps[2].classList.add('in'); tstep(0, true); }); // steps stream in
+        at(2800, function () { tstepDone(0); tstep(1, true); });
+        at(3700, function () { tstepDone(1); tstep(2, true); });
+        at(4600, function () { tstepDone(2); tstep(3, true); });
+        at(5700, function () { tstepDone(3); });
+        at(6000, function () { label.classList.remove('shimmer'); thread.classList.add('resolved'); });
+        at(6400, function () { steps[3].classList.add('in'); });                 // Job listing
+        at(6700, function () { steps[4].classList.add('in'); });                 // listing card
+        at(7500, function () { steps[5].classList.add('in'); stream(); });       // insight streams
+        at(13300, function () { thread.classList.add('out'); });
+        at(14200, reset);
       }
 
       function reset() {
@@ -2061,12 +2111,13 @@
         timers = [];
         if (streamId) { clearInterval(streamId); streamId = null; }
         steps.forEach(function (s) { s.classList.remove('in'); });
+        orbs.forEach(function (orb) { orb.classList.remove('is-in'); });
         tsteps.forEach(function (s) {
           s.classList.remove('on', 'act');
           s.querySelector('.tstep-label').classList.remove('shimmer');
         });
         thread.classList.remove('resolved');
-        label.classList.remove('shimmer');
+        label.classList.remove('shimmer', 'is-in');
         insBold.textContent = '';
         insRest.textContent = '';
         caret.classList.remove('steady');
